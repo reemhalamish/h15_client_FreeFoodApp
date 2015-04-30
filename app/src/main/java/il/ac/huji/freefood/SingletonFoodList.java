@@ -1,5 +1,9 @@
 package il.ac.huji.freefood;
 
+import android.os.SystemClock;
+
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,17 +12,30 @@ import java.util.List;
  */
 public class SingletonFoodList {
 
-    private static List<FoodListItem> mainList = new ArrayList<FoodListItem>();
+    private  List<FoodListItem> mainList = new ArrayList<FoodListItem>();
 
-    public SingletonFoodList() {}
+    private static SingletonFoodList instance;
 
-    public static List<FoodListItem> getList ()
+    private SingletonFoodList(){
+            instance = new SingletonFoodList();
+    }
+
+    public static SingletonFoodList getInstance(){
+        if (instance == null){
+            instance = new SingletonFoodList();
+        }
+            return instance;
+    }
+
+
+    public List<FoodListItem> getList ()
     {
         return mainList;
     }
 
     public static void addToList(FoodListItem item) {
-
+        ParseObject foodItem = new ParseObject(item.getId());
+        foodItem.put("")
     }
     public static void deleteFromList(int id) {
 
