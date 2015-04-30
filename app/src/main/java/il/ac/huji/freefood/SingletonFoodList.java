@@ -2,6 +2,7 @@ package il.ac.huji.freefood;
 
 import android.app.AlertDialog;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -19,19 +20,18 @@ import java.util.logging.Logger;
  */
 public class SingletonFoodList {
 
-    private  List<FoodListItem> mainList = new ArrayList<FoodListItem>();
-
     private static SingletonFoodList instance;
 
-    private SingletonFoodList(){
-            instance = new SingletonFoodList();
+    protected SingletonFoodList(){
+        Log.d("a","a");
     }
 
-    public static SingletonFoodList getInstance(){
+    public static synchronized SingletonFoodList getInstance(){
         if (instance == null){
             instance = new SingletonFoodList();
         }
             return instance;
+        return null;
     }
 
 
