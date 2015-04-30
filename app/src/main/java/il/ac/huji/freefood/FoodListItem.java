@@ -27,7 +27,7 @@ public class FoodListItem {
         this.numPeople = numPeople;
         this.building = building;
         this.insideBuilding = insideBuilding;
-        this.picture = picture;
+        this.picture = "pizza.jpg";
         this.description = description;
     }
 
