@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Free Food</string>
+    <string name="LoginActivity_EnterYourName">Please enter your name</string>
+    <string name="StringAcivity_NameHint">e.g Albert</string>
 </resources>

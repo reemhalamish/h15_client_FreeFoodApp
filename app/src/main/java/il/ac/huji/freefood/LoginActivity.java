@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
+import com.parse.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,38 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Button signIn = (Button) findViewById(R.id.email_sign_in_button);
+        signIn.setOnClickListener(new View.OnClickListener(){
+                                      @Override
+                                      public void onClick(View v) {
+                                          String email = ((TextView) findViewById(R.id.activityLogin_enterYourName)).getText().toString();
+                                          String password = email;
+                                          ParseUser user = new ParseUser();
+                                          user.setUsername("my name");
+                                          user.setPassword("my pass");
+                                          user.setEmail("email@example.com");
+
+// other fields can be set just like with ParseObject
+                                          user.put("phone", "650-253-0000");
+
+                                          user.signUpInBackground(new SignUpCallback() {
+                                              public void done(ParseException e) {
+                                                  if (e == null) {
+                                                      // Hooray! Let them use the app now.
+                                                  } else {
+                                                      // Sign up didn't succeed. Look at the ParseException
+                                                      // to figure out what went wrong
+                                                  }
+                                              }
+                                          });
+                                      }
+
+                                  }
+
+            );
     }
+
+
 }
 
 
