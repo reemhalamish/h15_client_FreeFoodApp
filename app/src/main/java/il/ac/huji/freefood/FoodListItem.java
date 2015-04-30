@@ -1,9 +1,14 @@
 package il.ac.huji.freefood;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 /**
  * Created by Elyasaf on 4/30/2015.
  */
-public class FoodListItem {
+
+@ParseClassName("FoodList")
+public class FoodListItem extends ParseObject {
 
     protected int id;
     protected int numPeople;
