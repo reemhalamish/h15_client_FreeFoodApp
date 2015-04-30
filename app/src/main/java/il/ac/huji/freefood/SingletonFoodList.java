@@ -24,7 +24,6 @@ public class SingletonFoodList {
     }
 
 
-
     public List<FoodListItem> getList ()
     {
         return mainList;
