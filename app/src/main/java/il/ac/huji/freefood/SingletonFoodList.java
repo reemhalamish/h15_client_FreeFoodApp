@@ -1,5 +1,9 @@
 package il.ac.huji.freefood;
 
+import android.os.SystemClock;
+
+import com.parse.ParseObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +34,8 @@ public class SingletonFoodList {
     }
 
     public static void addToList(FoodListItem item) {
-
+        ParseObject foodItem = new ParseObject(item.getId());
+        foodItem.put("")
     }
     public static void deleteFromList(int id) {
 
