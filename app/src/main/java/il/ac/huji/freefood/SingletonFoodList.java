@@ -31,7 +31,6 @@ public class SingletonFoodList {
             instance = new SingletonFoodList();
         }
             return instance;
-        return null;
     }
 
 
