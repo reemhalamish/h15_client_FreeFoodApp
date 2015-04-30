@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Free Food</string>
-    <string name="LoginActivity_EnterYourName">Please enter your name</string>
-    <string name="StringAcivity_NameHint">e.g Albert</string>
-    <string name="title_activity_login">LoginActivity</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="ActivityAddFood_insideBuildingHint">where inside the building?</string>
+    <string name="ActivityAddFood_description_hint">discription of the food</string>
+    <string name="ActivityAddFood_num_people_hint">לכמה אנשים לדעתך יספיק האוכל?</string>
+    <string name="action_settings">Free food</string>
+    <string name="SignUpActivity_EnterYourName">Please enter your name:</string>
+    <string name="SignUpActivity_NameHint">e.g: Albert</string>
+    <string name="SignUpActivity_Done">Done</string>
 </resources>

@@ -1,7 +1,11 @@
 package il.ac.huji.freefood;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,27 +38,26 @@ public class SignUpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        Button signIn = (Button) findViewById(R.id.email_sign_in_button);
+        Button signIn = (Button) findViewById(R.id.button);
+        final Context context = this;
         signIn.setOnClickListener(new View.OnClickListener(){
                                       @Override
                                       public void onClick(View v) {
-                                          String email = ((TextView) findViewById(R.id.activitySignUp_enterYourName)).getText().toString();
-                                          String password = email;
+                                          String uniqueID = Settings.Secure.getString(context.getContentResolver(),
+                                                  Settings.Secure.ANDROID_ID);
                                           ParseUser user = new ParseUser();
-                                          user.setUsername("my name");
-                                          user.setPassword("my pass");
-                                          user.setEmail("email@example.com");
-
-// other fields can be set just like with ParseObject
-                                          user.put("phone", "650-253-0000");
+                                          user.setUsername(uniqueID);
+                                          user.setPassword(uniqueID);
 
                                           user.signUpInBackground(new SignUpCallback() {
                                               public void done(ParseException e) {
                                                   if (e == null) {
-                                                      // Hooray! Let them use the app now.
+                                                      startActivity(new Intent(context, ChooseFoodActivity.class));
                                                   } else {
-                                                      // Sign up didn't succeed. Look at the ParseException
-                                                      // to figure out what went wrong
+                                                      AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
+                                                      dlgAlert.setTitle("Unable to sign up");
+                                                      dlgAlert.setMessage(e.getMessage());
+                                                      dlgAlert.create().show();
                                                   }
                                               }
                                           });

@@ -24,7 +24,7 @@ public class LoginActivity extends ActionBarActivity {
             String name = credentials.readLine();
             String password = credentials.readLine();
             final Context context = this;
-            ParseUser.logInInBackground("Jerry", "showmethemoney", new LogInCallback() {
+            ParseUser.logInInBackground(name, password, new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
                         startActivity(new Intent(context, ChooseFoodActivity.class));
@@ -36,28 +36,5 @@ public class LoginActivity extends ActionBarActivity {
         } catch (Exception e) {
             startActivity(new Intent(this, SignUpActivity.class));
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

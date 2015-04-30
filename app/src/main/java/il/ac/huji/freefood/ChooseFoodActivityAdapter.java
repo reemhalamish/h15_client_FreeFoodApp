@@ -35,16 +35,21 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View view = inflater.inflate(R.layout.choose_food_one_row, parent, false);
-        FoodListItem curItem = _objects.get(position);
-        TextView txtTitle = (TextView) view.findViewById(R.id.choose_food_title);
-        txtTitle.setText(curItem.getTitle());
+        View view = convertView;
+        if (view == null) {
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            view = inflater.inflate(R.layout.choose_food_one_row, parent, false);
+        }
 
+        FoodListItem curItem = this._objects.get(position);
+        TextView txtTitle = (TextView) view.findViewById(R.id.choose_food_title);
+        txtTitle.setText(curItem.getDescription());
+
+        /*
         ImageView imgPicture = (ImageView) view.findViewById(R.id.choose_food_picture);
         Drawable actualPicture = Drawable.createFromPath(curItem.getPicture());
         imgPicture.setImageDrawable(actualPicture);
-
+*/
         return view;
     }
 
