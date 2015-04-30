@@ -8,16 +8,29 @@ import java.util.List;
  */
 public class SingletonFoodList {
 
-    private static List<FoodListItem> mainList = new ArrayList<FoodListItem>();
+    private  List<FoodListItem> mainList = new ArrayList<FoodListItem>();
 
-    public SingletonFoodList() {}
+    private static SingletonFoodList instance;
 
-    public static List<FoodListItem> getList ()
+    private SingletonFoodList(){
+            instance = new SingletonFoodList();
+    }
+
+    public static SingletonFoodList getInstance(){
+        if (instance == null){
+            instance = new SingletonFoodList();
+        }
+            return instance;
+    }
+
+
+
+    public List<FoodListItem> getList ()
     {
         return mainList;
     }
 
-    public static List<FoodListItem> updateList ( List<FoodListItem> newList)
+    public List<FoodListItem> updateList ( List<FoodListItem> newList)
     {
             mainList = newList;
             return mainList;
