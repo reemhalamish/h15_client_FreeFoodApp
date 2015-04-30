@@ -11,18 +11,8 @@ public class FoodListItem {
     protected String insideBuilding;
     protected String picture;
     protected String description;
-    protected String title;
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public FoodListItem(int id, int numPeople, String building, String insideBuilding, String picture, String description, String title) {
-        this.title = title;
+    public FoodListItem(int id, int numPeople, String building, String insideBuilding, String picture, String description) {
         this.id = id;
         this.numPeople = numPeople;
         this.building = building;

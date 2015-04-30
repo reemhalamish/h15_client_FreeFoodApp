@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Free Food</string>
+    <string name="ActivityAddFood_insideBuildingHint">where inside the building?</string>
+    <string name="ActivityAddFood_description_hint">discription of the food</string>
+    <string name="ActivityAddFood_num_people_hint">לכמה אנשים לדעתך יספיק האוכל?</string>
 </resources>
