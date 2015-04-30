@@ -11,6 +11,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,19 +35,13 @@ public class SingletonFoodList {
     }
 
 
-    public List<FoodListItem> getList ()
-    {
-        return mainList;
+    public void getList(FindCallback<FoodListItem> callback){
+        ParseQuery<FoodListItem> query = ParseQuery.getQuery(FoodListItem.class);
+        List<FoodListItem> foodList = new LinkedList<FoodListItem>();
+        query.findInBackground(callback);
     }
 
     public static void addToList(FoodListItem item) {
-        //ParseObject foodItem = new ParseObject(item.getId());
-        //foodItem.put("")
-    }
-    public static void deleteFromList(int id) {
-
-    }
-    public static void updateFromList(FoodListItem item) {
         item.saveInBackground();
     }
 
