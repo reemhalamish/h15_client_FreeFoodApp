@@ -1,18 +1,27 @@
 package il.ac.huji.freefood;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 
 public class MainActivity extends ActionBarActivity {
+    final static int REQUEST_ADD_ITEM = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        int i = 0;
+        ImageButton btnHungry = (ImageButton) findViewById(R.id.main_image_hungry);
+        ImageButton btnAddFood = (ImageButton) findViewById(R.id.main_image_add_food);
+    }
+
+    protected void openDialogAdd() {
+        Intent addItemIntent = new Intent(this, AddFoodActivity.class);
+        startActivityForResult(addItemIntent, REQUEST_ADD_ITEM);
     }
 
 
