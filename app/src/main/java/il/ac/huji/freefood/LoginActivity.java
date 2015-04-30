@@ -18,7 +18,6 @@ public class LoginActivity extends ActionBarActivity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         ParseObject.registerSubclass(FoodListItem.class);
-        ParseInstallation.getCurrentInstallation().saveInBackground();
         Parse.initialize(this, "dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb", "2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA");
 
 
@@ -32,7 +31,7 @@ public class LoginActivity extends ActionBarActivity {
                     if (user != null) {
                         //SingletonFoodList.getInstance().addToList(new FoodListItem(4, "levy", "floor 1",
                         //        "pizza.jpg", "nom pizza"));
-                        startActivity(new Intent(context, ChooseFoodActivity.class));
+                        startActivity(new Intent(context, MainActivity.class));
                     } else {
                         startActivity(new Intent(context, SignUpActivity.class));
                     }
