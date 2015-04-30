@@ -13,7 +13,7 @@
         android:layout_centerInParent="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/LoginActivity_EnterYourName"
-        android:id="@+id/activityLogin_enterYourName"
+        android:id="@+id/activitySignUp_enterYourName"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="86dp" />
@@ -25,8 +25,8 @@
         android:inputType="text"
         android:hint="@string/StringAcivity_NameHint"
         android:ems="10"
-        android:id="@+id/activityLogin_name"
-        android:layout_below="@+id/activityLogin_enterYourName"
+        android:id="@+id/activitySignUp_name"
+        android:layout_below="@+id/activitySignUp_enterYourName"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:text="New Button"
         android:id="@+id/button"
-        android:layout_below="@+id/activityLogin_name"
+        android:layout_below="@+id/activitySignUp_name"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
 
