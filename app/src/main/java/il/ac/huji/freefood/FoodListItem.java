@@ -22,7 +22,7 @@ public class FoodListItem extends ParseObject {
         this.numPeople = numPeople;
         this.building = building;
         this.insideBuilding = insideBuilding;
-        this.picture = "pizza.jpg";
+        this.picture = "pizza";
         this.description = description;
     }
 

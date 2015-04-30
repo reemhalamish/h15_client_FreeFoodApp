@@ -2,15 +2,14 @@ package il.ac.huji.freefood;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import com.parse.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import com.parse.LogInCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -20,7 +19,7 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
-        ParseObject.registerSubclass(FoodListItem.class);
+        //ParseObject.registerSubclass(FoodListItem.class);
         Parse.initialize(this, "dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb", "2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA");
 
 

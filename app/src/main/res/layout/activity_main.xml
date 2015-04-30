@@ -3,19 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/main_bg"
-    tools:context="il.ac.huji.freefood.MainActivity">
+    android:background="#ff282828"
+    tools:context="il.ac.huji.freefood.MainActivity"
+    >
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/main_image_hungry"
-        android:src="@drawable/hungry"/>
+        android:clickable="true"
+        android:src="@drawable/hungry"
+    />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/main_image_add_food"
-        android:src="@drawable/food_to_share"/>
+        android:clickable="true"
+        android:src="@drawable/food_to_share"
+        />
 
 </LinearLayout>
