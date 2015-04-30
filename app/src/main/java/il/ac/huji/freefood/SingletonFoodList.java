@@ -1,5 +1,6 @@
 package il.ac.huji.freefood;
 
+import android.app.AlertDialog;
 import android.os.SystemClock;
 
 import com.parse.FindCallback;
@@ -11,6 +12,7 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Ayala on 30/04/2015.
@@ -40,20 +42,19 @@ public class SingletonFoodList {
     }
 
     public static void addToList(FoodListItem item) {
-        ParseObject foodItem = item;
-
-
-    public static void deleteFromList(int id) {
-
+        item.saveInBackground();
     }
-    public static void updateFromList(FoodListItem item) {
-        ParseQuery<FoodListItem> query = ParseQuery.getQuery(FoodListItem.class);
-        query.getInBackground(item.getId(), new GetCallback<FoodListItem>(){
-            @Override
-            public void done(List<FoodListItem> foodListItems, ParseException e) {
 
+    public static void deleteFromList(String objectID) {
+        ParseQuery<FoodListItem> query = new ParseQuery(FoodListItem.class);
+        query.getInBackground(objectID, new GetCallback<FoodListItem>() {
+            public void done(FoodListItem foodListItem, ParseException e) {
+                if (e == null) {
+                    foodListItem.deleteInBackground();
+                } else {
+                    Logger.getLogger("FreeFoodParse").warning("Didn't find foodItem to delete"+e.getMessage());
                 }
-            });
-        }
+            }
+        });
     }
 }
