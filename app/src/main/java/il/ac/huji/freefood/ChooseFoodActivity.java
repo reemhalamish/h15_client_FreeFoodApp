@@ -31,10 +31,10 @@ public class ChooseFoodActivity extends Activity {
             }
         });
 
-        FoodListItem food1 = new FoodListItem(1,20,"kaplan","floor 1", "avocado.jpg","a very ripe avocado");
-        FoodListItem food2 = new FoodListItem(2,15,"shprinzak","floor 3", "rogalachs.jpg", "leftovers from lecture");
-        FoodListItem food3 = new FoodListItem(3,40,"shprinzak","floor 1", "cakes.jpg", "leftover cakes");
-        actualList.add(food1);
+        FoodListItem food1 = new FoodListItem(1,20,"kaplan","floor 1", "","a very ripe avocado");
+        FoodListItem food2 = new FoodListItem(2,15,"shprinzak","floor 3", "", "leftovers from lecture");
+        FoodListItem food3 = new FoodListItem(3,40,"shprinzak","floor 1", "", "leftover cakes");
+        //SingletonFoodList.getInstance().addToList(food1); TODO
         actualList.add(food2);
         actualList.add(food3);
 
