@@ -40,11 +40,11 @@ public class SingletonFoodList {
         query.findInBackground(callback);
     }
 
-    public static void addToList(FoodListItem item) {
+    public void addToList(FoodListItem item) {
         item.saveInBackground();
     }
 
-    public static void deleteFromList(String objectID) {
+    public void deleteFromList(String objectID) {
         ParseQuery<FoodListItem> query = new ParseQuery(FoodListItem.class);
         query.getInBackground(objectID, new GetCallback<FoodListItem>() {
             public void done(FoodListItem foodListItem, ParseException e) {
