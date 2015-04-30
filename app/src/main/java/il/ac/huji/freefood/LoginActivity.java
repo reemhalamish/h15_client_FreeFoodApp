@@ -29,8 +29,8 @@ public class LoginActivity extends ActionBarActivity {
             ParseUser.logInInBackground(uniqueID, uniqueID, new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
-                        SingletonFoodList.getInstance().addToList(new FoodListItem(4, "levy", "floor 1",
-                                "pizza.jpg", "nom pizza"));
+                        //SingletonFoodList.getInstance().addToList(new FoodListItem(4, "levy", "floor 1",
+                        //        "pizza.jpg", "nom pizza"));
                         startActivity(new Intent(context, ChooseFoodActivity.class));
                     } else {
                         startActivity(new Intent(context, SignUpActivity.class));
