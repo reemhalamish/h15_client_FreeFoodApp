@@ -10,8 +10,10 @@ import com.parse.ParseObject;
 @ParseClassName("FoodList")
 public class FoodListItem extends ParseObject {
 
+
     public FoodListItem() {
     }
+
 
     public int getId() {
         return getInt("Id");
