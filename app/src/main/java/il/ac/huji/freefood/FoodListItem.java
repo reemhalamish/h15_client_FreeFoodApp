@@ -14,9 +14,14 @@ public class FoodListItem extends ParseObject {
     public FoodListItem() {
     }
 
-
-    public int getId() {
-        return getInt("Id");
+    public FoodListItem(int numPeople, String building, String insideBuilding,
+                                                    String picture, String description){
+        super();
+        this.setNumPeople(numPeople);
+        this.setBuilding(building);
+        this.setInsideBuilding(insideBuilding);
+        this.setPicture(picture);
+        this.setDescription(description);
     }
 
     public int getNumPeople() {
@@ -42,10 +47,6 @@ public class FoodListItem extends ParseObject {
     public String getAllInfo() {
         return getDescription() + " for " + Integer.toString(getNumPeople())+ " people is waiting in "+
                     getBuilding() + " in " +getInsideBuilding();
-    }
-
-    public void setId(int id) {
-        put("id",id);
     }
 
     public void setNumPeople(int numPeople) {
