@@ -1,21 +1,35 @@
 package il.ac.huji.freefood;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Spinner;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Reem on 30/04/2015.
  */
 public class AddFoodActivity extends Activity {
-    private static String[] FOOD_PICTURES = {"<choose picture>", "beer", "cake", "coffee", "cookies", "drinks", "fruits", "pizza", "rugelach", "sandwich"};
-    private static String[] FOOD_BUILDINGS = {"<choose building>", "Kaplan", "Shprintzek", "Ross", "Canada"};
+    private static List<String> FOOD_PICTURES = Arrays.asList("cookies", "beer", "cake", "coffee", "drinks", "fruits", "pizza", "rugelach", "sandwich");
+    private static List<String> FOOD_BUILDINGS = Arrays.asList("Rothberg", "Kaplan", "Shprintzek", "Ross", "Canada");
     //TODO: onCreate(), spinner for buildings, make it pretty!!
+
+    @Override
+    public void onCreate(Bundle unused) {
+        super.onCreate(unused);
+        setTitle(getResources().getString(R.string.addActivityTitle));
+        setContentView(R.layout.activity_add_food);
+        Spinner pictureSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_pictures);
+        Spinner buildingSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_building);
+
+        AdapterForPictures pictureAdapter = new AdapterForPictures(this, R.layout.simple_adapter_for_picture, FOOD_PICTURES);
+//        AdapterForStrings buildingAdapter = new AdapterForStrings(this, R.layout.simple_adapter_for_text, R.id.adapter_for_text_textView, FOOD_BUILDINGS);
+//        pictureSpinner.setAdapter(pictureAdapter);
+    }
 }
 /*
-    @Override
-    public void onCreate(Bundle unused){
-        super.onCreate(unused);
-        setTitle(getResources().getString(R.string.addDialogTitle));
-        setContentView(R.layout.dialog_adding_item);
+
         final EditText edtNewItem =(EditText) findViewById(R.id.et_add_dialog_text);
         final DatePicker datePicker =   (DatePicker) findViewById(R.id.dp_add_dialog_date);
         Button btnOK =         (Button) findViewById(R.id.btn_add_dialog_add);

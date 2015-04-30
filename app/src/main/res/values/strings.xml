@@ -11,5 +11,6 @@
     <string name="SignUpActivity_Done">Done</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="addActivityTitle">Found free food!</string>
 
 </resources>

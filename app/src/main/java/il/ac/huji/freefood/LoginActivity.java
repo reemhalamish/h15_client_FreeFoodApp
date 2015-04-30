@@ -18,6 +18,7 @@ public class LoginActivity extends ActionBarActivity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         ParseObject.registerSubclass(FoodListItem.class);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
         Parse.initialize(this, "dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb", "2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA");
 
 

@@ -19,7 +19,8 @@ public class MainActivity extends ActionBarActivity {
         ImageButton btnAddFood = (ImageButton) findViewById(R.id.main_image_add_food);
     }
 
-    protected void openDialogAdd() {
+    // TODO: use it!
+    protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
         startActivityForResult(addItemIntent, REQUEST_ADD_ITEM);
     }
