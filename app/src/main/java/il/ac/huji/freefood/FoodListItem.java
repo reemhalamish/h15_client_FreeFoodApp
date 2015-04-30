@@ -10,44 +10,31 @@ import com.parse.ParseObject;
 @ParseClassName("FoodList")
 public class FoodListItem extends ParseObject {
 
-    protected int id;
-    protected int numPeople;
-    protected String building;
-    protected String insideBuilding;
-    protected String picture;
-    protected String description;
-
-    public FoodListItem(int id, int numPeople, String building, String insideBuilding, String picture, String description) {
-        this.id = id;
-        this.numPeople = numPeople;
-        this.building = building;
-        this.insideBuilding = insideBuilding;
-        this.picture = "pizza";
-        this.description = description;
+    public FoodListItem() {
     }
 
     public int getId() {
-        return id;
+        return getInt("Id");
     }
 
     public int getNumPeople() {
-        return numPeople;
+        return getInt("numPeople");
     }
 
     public String getBuilding() {
-        return building;
+        return getString("building");
     }
 
     public String getInsideBuilding() {
-        return insideBuilding;
+        return getString("insideBuilding");
     }
 
     public String getPicture() {
-        return picture;
+        return getString("picture");
     }
 
     public String getDescription() {
-        return description;
+        return  getString("description");
     }
 
     public String getAllInfo() {
@@ -56,27 +43,26 @@ public class FoodListItem extends ParseObject {
     }
 
     public void setId(int id) {
-        this.id = id;
+        put("id",id);
     }
 
     public void setNumPeople(int numPeople) {
-        this.numPeople = numPeople;
+        put("numPeople",numPeople);
     }
 
     public void setBuilding(String building) {
-        this.building = building;
+        put("building",building);
     }
 
     public void setInsideBuilding(String insideBuilding) {
-        this.insideBuilding = insideBuilding;
+        put("insideBuilding",insideBuilding);
     }
 
     public void setPicture(String picture) {
-        this.picture = picture;
+        put("picture",picture);
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        put("description",description);
     }
-
 }
