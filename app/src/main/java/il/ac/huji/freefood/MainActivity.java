@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    final static int REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
     protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
-        startActivity(addItemIntent);
+        startActivityForResult(addItemIntent, REQUEST_CODE);
     }
     protected void callActivityHungry() {
         Intent addItemIntent = new Intent(this, ChooseFoodActivity.class);

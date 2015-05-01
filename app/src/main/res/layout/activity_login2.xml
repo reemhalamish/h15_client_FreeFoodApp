@@ -12,6 +12,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Welcome"
         android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:padding="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pooh_in_snow"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

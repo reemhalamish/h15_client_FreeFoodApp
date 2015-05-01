@@ -13,8 +13,14 @@ import java.util.*;
  * Created by Reem on 30/04/2015.
  */
 public class AddFoodActivity extends Activity {
-    private static List<Integer> FOOD_PICTURES = Arrays.asList(R.drawable.cookies, R.drawable.beer, R.drawable.cake, R.drawable.coffee, R.drawable.drinks, R.drawable.fruits, R.drawable.pizza, R.drawable.rugelach, R.drawable.sandwich);
+    private static List<Integer> FOOD_PICTURES = Arrays.asList(R.drawable.default_picture, R.drawable.cookies, R.drawable.beer, R.drawable.cake, R.drawable.coffee, R.drawable.drinks, R.drawable.fruits, R.drawable.pizza, R.drawable.rugelach, R.drawable.sandwich);
     private static List<String> FOOD_BUILDINGS = Arrays.asList("Rothberg", "Kaplan", "Shprintzek", "Ross", "Canada");
+    private Spinner pictureSpinner;
+    private Spinner buildingSpinner;
+    private EditText placeInBuilding;
+    private EditText description;
+    private EditText numOfPeople;
+
     //TODO: onCreate(), spinner for buildings, make it pretty!!
 
     @Override
@@ -22,8 +28,13 @@ public class AddFoodActivity extends Activity {
         super.onCreate(unused);
         setTitle(getResources().getString(R.string.addActivityTitle));
         setContentView(R.layout.activity_add_food);
-        Spinner pictureSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_pictures);
-        Spinner buildingSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_building);
+        pictureSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_pictures);
+        buildingSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_building);
+        placeInBuilding = (EditText) findViewById(R.id.activityAddFood_edt_inside_building);
+        description = (EditText) findViewById(R.id.activityAddFood_edt_description);
+        numOfPeople = (EditText) findViewById(R.id.activityAddFood_num_people);
+        Button btnAdd = (Button) findViewById(R.id.activityAddFood_send_button);
+        Button btnCancel = (Button) findViewById(R.id.activityAddFood_cancel_button);
 
         List<HashMap<String, Integer>> list = new ArrayList<HashMap<String, Integer>>();
         HashMap<String, Integer> map;
@@ -51,71 +62,29 @@ public class AddFoodActivity extends Activity {
                 new int[]{R.id.adapter_for_text_textView});
         buildingSpinner.setAdapter(adapterBuilding);
 
-    }
-
-/*
-
-        final EditText edtNewItem =(EditText) findViewById(R.id.et_add_dialog_text);
-        final DatePicker datePicker =   (DatePicker) findViewById(R.id.dp_add_dialog_date);
-        Button btnOK =         (Button) findViewById(R.id.btn_add_dialog_add);
-        Button btnCancel =      (Button) findViewById(R.id.btn_add_dialog_cancel);
-        final CheckBox cbxNoDue =        (CheckBox) findViewById(R.id.cbx_add_dialog_no_due);
-
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                setResult(RESULT_CANCELED, returnIntent);
-                finish();
+            public void onClick(View view) {
+                int RETURN_WITHOUT_SUCCESS = 0;
+                finishActivity(RETURN_WITHOUT_SUCCESS);
             }
         });
 
-        btnOK.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String text = edtNewItem.getText().toString();
-                int d_days = datePicker.getDayOfMonth();
-                int d_months = datePicker.getMonth();
-                int d_years = datePicker.getYear();
-                GregorianCalendar dueDate = new GregorianCalendar(d_years, d_months, d_days);
-                Date retVal = dueDate.getTime();
-                if (cbxNoDue.isChecked()) {
-                    retVal = null;
-                }
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("title", text);
-                returnIntent.putExtra("dueDate", retVal);
-                setResult(RESULT_OK, returnIntent);
-                finish();
+            public void onClick(View view) {
+                FoodListItem foodListItem = new FoodListItem(
+                        Integer.parseInt(numOfPeople.getText().toString()),
+                        ((HashMap<String, String>)buildingSpinner.getSelectedItem()).get("Name"),
+                        placeInBuilding.getText().toString(),
+                        ((HashMap<String, Integer>)pictureSpinner.getSelectedItem()).get("Icon"),
+                        description.getText().toString());
+                SingletonFoodList.getInstance().addToList(foodListItem);
+                int SUCCESS = 1;
+                finishActivity(SUCCESS);
             }
         });
     }
-}
-*/
-
-
-/*
-
-spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-    @Override
-    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-        // your code here
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parentView) {
-        // your code here
-    }
-
-});
-
-TODO:
-need to return with success or failure (to add a cancel button)
-need to create intent from the main
-need to create the main!
-
-
- */
 
     public class PictureAdapter extends SimpleAdapter {
 

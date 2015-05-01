@@ -15,7 +15,7 @@ public class FoodListItem extends ParseObject {
     }
 
     public FoodListItem(int numPeople, String building, String insideBuilding,
-                                                    String picture, String description){
+                                                    int picture, String description){
         super();
         this.setNumPeople(numPeople);
         this.setBuilding(building);
@@ -36,8 +36,8 @@ public class FoodListItem extends ParseObject {
         return getString("insideBuilding");
     }
 
-    public String getPicture() {
-        return getString("picture");
+    public int getPicture() {
+        return getInt("picture");
     }
 
     public String getDescription() {
@@ -61,7 +61,7 @@ public class FoodListItem extends ParseObject {
         put("insideBuilding",insideBuilding);
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(int picture) {
         put("picture",picture);
     }
 
