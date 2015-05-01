@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 
 
@@ -17,12 +18,29 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ImageButton btnHungry = (ImageButton) findViewById(R.id.main_image_hungry);
         ImageButton btnAddFood = (ImageButton) findViewById(R.id.main_image_add_food);
+        btnAddFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callActivityAdd();
+            }
+        });
+        btnHungry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callActivityHungry();
+            }
+        });
     }
 
-    // TODO: use it!
+    //TODO: on intent returns check for answer from the add and blahblah...
+
     protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
         startActivityForResult(addItemIntent, REQUEST_ADD_ITEM);
+    }
+    protected void callActivityHungry() {
+        Intent addItemIntent = new Intent(this, ChooseFoodActivity.class);
+        startActivity(addItemIntent);
     }
 
 
