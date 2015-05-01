@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.parse.LogInCallback;
 import com.parse.*;
@@ -19,7 +20,17 @@ public class LoginActivity extends ActionBarActivity {
         Parse.enableLocalDatastore(this);
         ParseObject.registerSubclass(FoodListItem.class);
         Parse.initialize(this, "dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb", "2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA");
-        //ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParsePush.subscribeInBackground("", new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
+                } else {
+                    Log.e("com.parse.push", "failed to subscribe for push", e);
+                }
+            }
+        });
 
         setContentView(R.layout.activity_login2);
         try {
@@ -29,9 +40,6 @@ public class LoginActivity extends ActionBarActivity {
             ParseUser.logInInBackground(uniqueID, uniqueID, new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
-                        //SingletonFoodList.getInstance().addToList(new FoodListItem(4, "levy", "floor 1",
-                        //        "pizza.jpg", "nom pizza"));
-                        Intent intent = new Intent(context, ChooseFoodActivity.class);
                         startActivity(new Intent(context, MainActivity.class));
                     } else {
                         startActivity(new Intent(context, SignUpActivity.class));
