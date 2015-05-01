@@ -66,7 +66,7 @@ public class ChooseFoodActivity extends Activity {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             FoodListItem curItem = localCopyOfTheList.get(info.position);
             menu.setHeaderTitle(curItem.getDescription());
-            menu.add(ContextMenu.NONE, 0, 0, "delete item");
+            menu.add(ContextMenu.NONE, 0, 0, "Report gone");
         }
 
     }
@@ -90,11 +90,11 @@ public class ChooseFoodActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final FoodListItem item = localCopyOfTheList.get(index);
         String text = item.getDescription();
-        String msg = "You are about to DELETE ''" + text + "'' FOR GOOD. Are you sure? (CAN'T BE UNDONE, click 'delete' only if you saw with your own eyes that there is no food here)";
-        builder.setTitle("Really delete?");
+        String msg = "This will remove this item from the list.";
+        builder.setTitle("Are you sure?");
         builder.setMessage(msg);
         // Set up the buttons
-        builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

@@ -43,7 +43,7 @@ public class SignUpActivity extends Activity {
         signIn.setOnClickListener(new View.OnClickListener(){
                                       @Override
                                       public void onClick(View v) {
-                                          String name = ((TextView) findViewById(R.id.activitySignUp_name)).getText().toString();
+                                          final String name = ((TextView) findViewById(R.id.activitySignUp_name)).getText().toString();
                                           String uniqueID = Settings.Secure.getString(context.getContentResolver(),
                                                   Settings.Secure.ANDROID_ID);
                                           ParseUser user = new ParseUser();
