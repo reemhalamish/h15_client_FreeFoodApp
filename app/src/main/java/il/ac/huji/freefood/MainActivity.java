@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
     protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
-        startActivityForResult(addItemIntent, REQUEST_CODE);
+        startActivity(addItemIntent);
     }
     protected void callActivityHungry() {
         Intent addItemIntent = new Intent(this, ChooseFoodActivity.class);
