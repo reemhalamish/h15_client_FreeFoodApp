@@ -32,7 +32,13 @@ public class MainActivity extends ActionBarActivity {
             }
         });
         TextView personName = (TextView) findViewById(R.id.person_name);
-        personName.setText("Hello "+getIntent().getStringExtra("name"));
+        String name = getIntent().getStringExtra("name");
+        if (name == null){
+            personName.setVisibility(View.INVISIBLE);
+        }
+        else{
+            personName.setText("Hello "+name);
+        }
     }
 
     protected void callActivityAdd() {
