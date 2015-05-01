@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 
 
 public class MainActivity extends ActionBarActivity {
-    final static int REQUEST_ADD_ITEM = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +31,9 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    //TODO: on intent returns check for answer from the add and blahblah...
-
     protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
-        startActivityForResult(addItemIntent, REQUEST_ADD_ITEM);
+        startActivity(addItemIntent);
     }
     protected void callActivityHungry() {
         Intent addItemIntent = new Intent(this, ChooseFoodActivity.class);
