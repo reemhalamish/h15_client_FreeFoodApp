@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:clickable="true" android:orientation="horizontal"
+    android:clickable="true"
+                android:longClickable="true"
+                android:orientation="horizontal"
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:layout_margin="80px"
     >
@@ -29,6 +31,6 @@
         android:layout_alignBottom="@id/choose_food_picture"
         android:layout_alignParentRight="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/choose_food_building" />
+        android:id="@+id/choose_food_subtitle" />
 
 </RelativeLayout>

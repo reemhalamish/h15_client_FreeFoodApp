@@ -8,6 +8,9 @@
 
     <ListView android:id="@+id/lv_FoodShowList"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:longClickable="true"
+              android:clickable="true"
+        />
 
 </RelativeLayout>
