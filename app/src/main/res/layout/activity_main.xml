@@ -7,6 +7,17 @@
     tools:context="il.ac.huji.freefood.MainActivity"
     >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/person_name"
+        android:singleLine="true"
+        android:textSize="14dp"
+        android:textColor="#ff82e7e1" />
+
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -40,7 +40,10 @@ public class LoginActivity extends ActionBarActivity {
             ParseUser.logInInBackground(uniqueID, uniqueID, new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
-                        startActivity(new Intent(context, MainActivity.class));
+                        String name = (String)user.get("name");
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.putExtra("name", name);
+                        startActivity(intent);
                     } else {
                         startActivity(new Intent(context, SignUpActivity.class));
                     }

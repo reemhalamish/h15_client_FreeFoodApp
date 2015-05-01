@@ -6,7 +6,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -29,6 +31,8 @@ public class MainActivity extends ActionBarActivity {
                 callActivityHungry();
             }
         });
+        TextView personName = (TextView) findViewById(R.id.person_name);
+        personName.setText("Hello "+getIntent().getStringExtra("name"));
     }
 
     protected void callActivityAdd() {
