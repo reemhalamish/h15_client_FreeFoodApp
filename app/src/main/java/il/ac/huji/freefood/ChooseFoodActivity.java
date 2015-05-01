@@ -43,7 +43,7 @@ public class ChooseFoodActivity extends Activity {
 
             @Override
             public void done(List<FoodListItem> foodListItems, ParseException e) {
-                if (foodListItems == null) {
+                if (foodListItems == null || foodListItems.size() == 0) {
                     ImageView img = (ImageView) findViewById(R.id.iv_loader);
                     img.setBackgroundResource(R.drawable.no_food_found);
                 } else {
