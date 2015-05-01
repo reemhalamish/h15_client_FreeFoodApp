@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class AddFoodActivity extends Activity {
     private static List<Integer> FOOD_PICTURES = Arrays.asList(R.drawable.default_picture, R.drawable.cookies, R.drawable.beer, R.drawable.cake, R.drawable.coffee, R.drawable.drinks, R.drawable.fruits, R.drawable.pizza, R.drawable.rugelach, R.drawable.sandwich);
-    private static List<String> FOOD_BUILDINGS = Arrays.asList("Rothberg", "Kaplan", "Shprintzek", "Ross", "Canada");
+    private static List<String> FOOD_BUILDINGS = Arrays.asList("Rothberg", "Kaplan", "Shprintzek", "Ross", "Canada", "Harman-shop","Living area","Main grass area");
     private Spinner pictureSpinner;
     private Spinner buildingSpinner;
     private EditText placeInBuilding;
@@ -64,12 +64,20 @@ public class AddFoodActivity extends Activity {
        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int fli_numPeople;
+                try {fli_numPeople = Integer.parseInt(numOfPeople.getText().toString());}
+                catch (Exception e) {fli_numPeople = 3;}
+                int fli_pictureId = ((HashMap<String, Integer>)pictureSpinner.getSelectedItem()).get("Icon");
+                String fli_building = ((HashMap<String, String>)buildingSpinner.getSelectedItem()).get("Name");
+                String fli_placeInBuilding = placeInBuilding.getText().toString();
+                String fli_description = description.getText().toString();
                 FoodListItem foodListItem = new FoodListItem(
-                        Integer.parseInt(numOfPeople.getText().toString()),
-                        ((HashMap<String, String>)buildingSpinner.getSelectedItem()).get("Name"),
-                        placeInBuilding.getText().toString(),
-                        ((HashMap<String, Integer>)pictureSpinner.getSelectedItem()).get("Icon"),
-                        description.getText().toString());
+                        fli_numPeople,
+                        fli_building,
+                        fli_placeInBuilding,
+                        fli_pictureId,
+                        fli_description
+                        );
                 SingletonFoodList.getInstance().addToList(foodListItem);
                 startActivity(new Intent(context, MainActivity.class));
             }
