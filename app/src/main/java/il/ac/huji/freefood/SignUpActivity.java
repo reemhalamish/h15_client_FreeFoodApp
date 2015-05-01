@@ -53,7 +53,9 @@ public class SignUpActivity extends Activity {
                                           user.signUpInBackground(new SignUpCallback() {
                                               public void done(ParseException e) {
                                                   if (e == null) {
-                                                      startActivity(new Intent(context, MainActivity.class));
+                                                      Intent intent = new Intent(context, MainActivity.class);
+                                                      intent.putExtra("name", name);
+                                                      startActivity(intent);
                                                   } else {
                                                       AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
                                                       dlgAlert.setTitle("Unable to sign up");
