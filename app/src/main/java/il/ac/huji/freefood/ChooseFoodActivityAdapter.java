@@ -44,13 +44,10 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
         FoodListItem curItem = this._objects.get(position);
         TextView txtTitle = (TextView) view.findViewById(R.id.choose_food_title);
         txtTitle.setText(curItem.getDescription());
-
-        /*
-        ImageView imgPicture = (ImageView) view.findViewById(R.id.choose_food_picture);
-        Drawable actualPicture = Drawable.createFromPath(curItem.getPicture());
-        imgPicture.setImageDrawable(actualPicture);
-*/
+        String info = curItem.getBuilding()+" building, floor: "+curItem.getInsideBuilding() + ". \nSuitable for "+Integer.toString(curItem.getNumPeople()) + " people.";
+        TextView txtSubtitle = (TextView) view.findViewById(R.id.choose_food_subtitle);
+        txtSubtitle.setText(info);
         return view;
     }
 
-    }
+}
