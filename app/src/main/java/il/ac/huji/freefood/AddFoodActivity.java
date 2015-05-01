@@ -1,17 +1,19 @@
 package il.ac.huji.freefood;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.widget.Spinner;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Reem on 30/04/2015.
  */
 public class AddFoodActivity extends Activity {
-    private static List<String> FOOD_PICTURES = Arrays.asList("cookies", "beer", "cake", "coffee", "drinks", "fruits", "pizza", "rugelach", "sandwich");
+    private static List<Integer> FOOD_PICTURES = Arrays.asList(R.drawable.cookies, R.drawable.beer, R.drawable.cake, R.drawable.coffee, R.drawable.drinks, R.drawable.fruits, R.drawable.pizza, R.drawable.rugelach, R.drawable.sandwich);
     private static List<String> FOOD_BUILDINGS = Arrays.asList("Rothberg", "Kaplan", "Shprintzek", "Ross", "Canada");
     //TODO: onCreate(), spinner for buildings, make it pretty!!
 
@@ -23,11 +25,34 @@ public class AddFoodActivity extends Activity {
         Spinner pictureSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_pictures);
         Spinner buildingSpinner = (Spinner) findViewById(R.id.activityAddFood_spn_building);
 
-        AdapterForPictures pictureAdapter = new AdapterForPictures(this, R.layout.simple_adapter_for_picture, FOOD_PICTURES);
-//        AdapterForStrings buildingAdapter = new AdapterForStrings(this, R.layout.simple_adapter_for_text, R.id.adapter_for_text_textView, FOOD_BUILDINGS);
-//        pictureSpinner.setAdapter(pictureAdapter);
+        List<HashMap<String, Integer>> list = new ArrayList<HashMap<String, Integer>>();
+        HashMap<String, Integer> map;
+        for (int Rdrowable : FOOD_PICTURES) {
+            map = new HashMap<String, Integer>();
+            map.put("Icon", Rdrowable);
+            list.add(map);
+        }
+        final Context context = this;
+        PictureAdapter adapterPictures = new PictureAdapter(context, list,
+                R.layout.simple_adapter_for_picture, new String[]{"Name", "Icon"},
+                new int[]{R.id.adapter_for_image_name, R.id.adapter_for_image_imageView});
+
+        pictureSpinner.setAdapter(adapterPictures);
+
+        List<HashMap<String, String>> listText = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> mapText;
+        for (String classroom : FOOD_BUILDINGS) {
+            mapText = new HashMap<String, String>();
+            mapText.put("Name", classroom);
+            listText.add(mapText);
+        }
+        StringAdapter adapterBuilding = new StringAdapter(context, listText,
+                R.layout.simple_adapter_for_text, new String[]{"Name"},
+                new int[]{R.id.adapter_for_text_textView});
+        buildingSpinner.setAdapter(adapterBuilding);
+
     }
-}
+
 /*
 
         final EditText edtNewItem =(EditText) findViewById(R.id.et_add_dialog_text);
@@ -91,3 +116,54 @@ need to create the main!
 
 
  */
+
+    public class PictureAdapter extends SimpleAdapter {
+
+        public PictureAdapter(Context context, List<? extends Map<String, ?>> data,
+                         int resource, String[] from, int[] to) {
+            super(context, data, resource, from, to);
+
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.simple_adapter_for_picture,
+                        null);
+            }
+
+            HashMap<String, Integer> data = (HashMap<String, Integer>) getItem(position);
+            ((ImageView) convertView.findViewById(R.id.adapter_for_image_imageView))
+                    .setImageResource((int) data.get("Icon"));
+
+            return convertView;
+        }
+
+    }
+    public class StringAdapter extends SimpleAdapter {
+
+        public StringAdapter(Context context, List<? extends Map<String, ?>> data,
+                               int resource, String[] from, int[] to) {
+            super(context, data, resource, from, to);
+
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.simple_adapter_for_text,
+                        null);
+            }
+
+            HashMap<String, String> data = (HashMap<String, String>) getItem(position);
+            TextView tv = (TextView) convertView.findViewById(R.id.adapter_for_text_textView);
+            tv.setText((String) data.get("Name"));
+           // tv.setTextSize(25);
+
+            return convertView;
+        }
+
+    }
+}
