@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:protectionLevel="signature"
+   <permission android:protectionLevel="dangerous"
         android:name="il.ac.huji.freefood.permission.C2D_MESSAGE" />
     <uses-permission android:name="il.ac.huji.freefood.permission.C2D_MESSAGE" />
 
@@ -58,7 +58,7 @@
                 <!--
                   IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name.
                 -->
-                <category android:name="com.parse.tutorials.pushnotifications" />
+                <category android:name="il.ac.huji.freefood.pushnotifications" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.parse.ParsePushBroadcastReceiver" android:exported="false">

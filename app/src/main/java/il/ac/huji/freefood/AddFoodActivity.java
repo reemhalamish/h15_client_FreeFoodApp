@@ -34,7 +34,6 @@ public class AddFoodActivity extends Activity {
         description = (EditText) findViewById(R.id.activityAddFood_edt_description);
         numOfPeople = (EditText) findViewById(R.id.activityAddFood_num_people);
         Button btnAdd = (Button) findViewById(R.id.activityAddFood_send_button);
-        Button btnCancel = (Button) findViewById(R.id.activityAddFood_cancel_button);
 
         List<HashMap<String, Integer>> list = new ArrayList<HashMap<String, Integer>>();
         HashMap<String, Integer> map;
@@ -62,15 +61,7 @@ public class AddFoodActivity extends Activity {
                 new int[]{R.id.adapter_for_text_textView});
         buildingSpinner.setAdapter(adapterBuilding);
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int RETURN_WITHOUT_SUCCESS = 0;
-                finishActivity(RETURN_WITHOUT_SUCCESS);
-            }
-        });
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+       btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FoodListItem foodListItem = new FoodListItem(

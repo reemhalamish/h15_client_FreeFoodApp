@@ -4,11 +4,7 @@ import android.app.AlertDialog;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.parse.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -41,7 +37,14 @@ public class SingletonFoodList {
     }
 
     public void addToList(FoodListItem item) {
-        item.saveInBackground();
+        item.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){
+                    Log.e("Food","add food result -> " + e.getMessage());
+                }
+            }
+        });
     }
 
     public void deleteFromList(String objectID) {
