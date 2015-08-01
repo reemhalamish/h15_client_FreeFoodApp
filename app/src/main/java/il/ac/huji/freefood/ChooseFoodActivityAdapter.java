@@ -40,7 +40,7 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            view = inflater.inflate(R.layout.choose_food_one_row_front, parent, false);
+            view = inflater.inflate(R.layout.choose_food_one_row, parent, false);
         }
 
         if (_dismissListener != null) {

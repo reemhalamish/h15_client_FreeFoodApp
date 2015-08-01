@@ -72,7 +72,7 @@ public class ChooseFoodActivity extends Activity {
 
         dismissListener = createDismissListener();
 
-        aa = new ChooseFoodActivityAdapter(context, R.layout.choose_food_one_row_front, R.id.choose_food_picture, foodListItems, dismissListener);
+        aa = new ChooseFoodActivityAdapter(context, R.layout.choose_food_one_row, R.id.choose_food_picture, foodListItems, dismissListener);
         lv_foodList.setAdapter(aa);
     }
 
@@ -85,6 +85,7 @@ public class ChooseFoodActivity extends Activity {
             display.getSize(size);
             width = size.x;
         } else {
+            //noinspection deprecation
             width = display.getWidth();
         }
         return width;
