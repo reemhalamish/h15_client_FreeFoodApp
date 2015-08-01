@@ -7,7 +7,9 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -30,11 +32,19 @@ public class MainActivity extends ActionBarActivity {
                 callActivityHungry();
             }
         });
+        TextView personName = (TextView) findViewById(R.id.person_name);
+        String name = getIntent().getStringExtra("name");
+        if (name == null){
+            personName.setVisibility(View.INVISIBLE);
+        }
+        else{
+            personName.setText("Hello "+name);
+        }
     }
 
     protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
-        startActivityForResult(addItemIntent, REQUEST_CODE);
+        startActivity(addItemIntent);
     }
     protected void callActivityHungry() {
         Intent addItemIntent = new Intent(this, ChooseFoodActivity.class);
