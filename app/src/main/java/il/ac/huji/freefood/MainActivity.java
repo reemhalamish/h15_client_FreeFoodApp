@@ -3,6 +3,7 @@ package il.ac.huji.freefood;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,5 +62,32 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * back button from home will exit the app. api 5
+     */
+//    @Override
+//    public void onBackPressed() {
+//        Log.i("back", "back pressed");
+//        Log.d("back", "back pressed!");
+//        finish();
+//        System.exit(0);
+//    }
+
+
+    /**
+     * back button from home will exit the app. api 6+
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+//            Log.i("back", "back pressed");
+//            Log.d("back", "back pressed");
+//            finish();
+//            System.exit(0);
+//            return true;
+//        }
+        return super.onKeyDown(keyCode, event);
     }
 }

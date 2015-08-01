@@ -2,25 +2,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ff282828"
+    android:orientation="vertical"
     tools:context="il.ac.huji.freefood.MainActivity"
     >
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/main_image_hungry"
-        android:clickable="true"
-        android:src="@drawable/hungry"
-    />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:background="#ff282828">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/main_image_add_food"
-        android:clickable="true"
-        android:src="@drawable/food_to_share"
+        <ImageButton
+            android:id="@+id/main_image_hungry"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:src="@drawable/hungry"
         />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:background="#ff282828">
+
+        <ImageButton
+            android:id="@+id/main_image_add_food"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:src="@drawable/food_to_share" />
+    </RelativeLayout>
 
 </LinearLayout>

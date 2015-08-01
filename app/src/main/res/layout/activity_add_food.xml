@@ -2,87 +2,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
     <Spinner
+        android:id="@+id/activityAddFood_spn_pictures"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/activityAddFood_spn_pictures"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:spinnerMode="dialog" />
 
     <Spinner
+        android:id="@+id/activityAddFood_spn_building"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/activityAddFood_spn_building"
-        android:layout_below="@+id/activityAddFood_spn_pictures"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/activityAddFood_spn_pictures"
         android:spinnerMode="dialog" />
 
     <EditText
+        android:id="@+id/activityAddFood_edt_inside_building"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/ActivityAddFood_insideBuildingHint"
-        android:id="@+id/activityAddFood_edt_inside_building"
-        android:layout_below="@+id/activityAddFood_spn_building"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/activityAddFood_spn_building"
+        android:hint="@string/ActivityAddFood_insideBuildingHint"
      />
 
     <EditText
+        android:id="@+id/activityAddFood_edt_description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/activityAddFood_edt_description"
-        android:hint="@string/ActivityAddFood_description_hint"
-        android:layout_below="@+id/activityAddFood_edt_inside_building"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/activityAddFood_edt_inside_building"
+        android:hint="@string/ActivityAddFood_description_hint"
     />
 
     <ImageView
+        android:id="@+id/activityAddFood_bg_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/activityAddFood_bg_image"
-        android:layout_below="@+id/activityAddFood_edt_description"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/activityAddFood_edt_description"
         android:src="@drawable/pooh_giving_flower" />
 
     <Button
+        android:id="@+id/activityAddFood_send_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add food!"
-        android:id="@+id/activityAddFood_send_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:text="Add food!"
         />
     <Button
+        android:id="@+id/activityAddFood_cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="cancel"
-        android:id="@+id/activityAddFood_cancel_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:text="cancel"
         />
 
     <EditText
+        android:id="@+id/activityAddFood_num_people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="2"
-        android:text="3"
-        android:textDirection="ltr"
-        android:textAlignment="textEnd"
-        android:id="@+id/activityAddFood_num_people"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentTop="true"
+        android:ems="2"
+        android:inputType="number"
+        android:text="3"
+        android:textAlignment="textEnd"
+        android:textDirection="ltr" />
 
     <TextView
+        android:id="@+id/activityAddFood_num_people_hint_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="For how many people?"
-        android:id="@+id/activityAddFood_num_people_hint_textView"
         android:layout_alignBottom="@+id/activityAddFood_num_people"
         android:layout_toLeftOf="@+id/activityAddFood_num_people"
-        android:layout_toStartOf="@+id/activityAddFood_num_people"/>
+        android:layout_toStartOf="@+id/activityAddFood_num_people"
+        android:text="For how many people?"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

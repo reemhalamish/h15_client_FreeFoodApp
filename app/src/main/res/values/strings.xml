@@ -12,5 +12,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="addActivityTitle">Found free food!</string>
+    <string name="choose_food_row_dismiss_question">Dismiss?</string>
 
 </resources>

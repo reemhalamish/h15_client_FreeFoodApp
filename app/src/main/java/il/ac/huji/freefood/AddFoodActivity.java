@@ -5,12 +5,23 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Reem on 30/04/2015.
+ *
+ * the activity to add one more foodListItem
  */
 public class AddFoodActivity extends Activity {
     private static List<Integer> FOOD_PICTURES = Arrays.asList(R.drawable.default_picture, R.drawable.cookies, R.drawable.beer, R.drawable.cake, R.drawable.coffee, R.drawable.drinks, R.drawable.fruits, R.drawable.pizza, R.drawable.rugelach, R.drawable.sandwich);
@@ -36,7 +47,7 @@ public class AddFoodActivity extends Activity {
         Button btnAdd = (Button) findViewById(R.id.activityAddFood_send_button);
         Button btnCancel = (Button) findViewById(R.id.activityAddFood_cancel_button);
 
-        List<HashMap<String, Integer>> list = new ArrayList<HashMap<String, Integer>>();
+        List<HashMap<String, Integer>> list = new ArrayList<>();
         HashMap<String, Integer> map;
         for (int Rdrowable : FOOD_PICTURES) {
             map = new HashMap<String, Integer>();
@@ -50,10 +61,10 @@ public class AddFoodActivity extends Activity {
 
         pictureSpinner.setAdapter(adapterPictures);
 
-        List<HashMap<String, String>> listText = new ArrayList<HashMap<String, String>>();
+        List<HashMap<String, String>> listText = new ArrayList<>();
         HashMap<String, String> mapText;
         for (String classroom : FOOD_BUILDINGS) {
-            mapText = new HashMap<String, String>();
+            mapText = new HashMap<>();
             mapText.put("Name", classroom);
             listText.add(mapText);
         }
@@ -66,7 +77,7 @@ public class AddFoodActivity extends Activity {
             @Override
             public void onClick(View view) {
                 int RETURN_WITHOUT_SUCCESS = 0;
-                finishActivity(RETURN_WITHOUT_SUCCESS);
+                finish();
             }
         });
 
@@ -104,7 +115,7 @@ public class AddFoodActivity extends Activity {
 
             HashMap<String, Integer> data = (HashMap<String, Integer>) getItem(position);
             ((ImageView) convertView.findViewById(R.id.adapter_for_image_imageView))
-                    .setImageResource((int) data.get("Icon"));
+                    .setImageResource(data.get("Icon"));
 
             return convertView;
         }
@@ -128,7 +139,7 @@ public class AddFoodActivity extends Activity {
 
             HashMap<String, String> data = (HashMap<String, String>) getItem(position);
             TextView tv = (TextView) convertView.findViewById(R.id.adapter_for_text_textView);
-            tv.setText((String) data.get("Name"));
+            tv.setText(data.get("Name"));
            // tv.setTextSize(25);
 
             return convertView;

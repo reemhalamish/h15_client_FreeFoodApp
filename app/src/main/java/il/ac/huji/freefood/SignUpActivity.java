@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.parse.*;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 
 /**
@@ -24,16 +26,8 @@ import com.parse.*;
 public class SignUpActivity extends Activity {
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,32 +35,33 @@ public class SignUpActivity extends Activity {
         Button signIn = (Button) findViewById(R.id.button);
         final Context context = this;
         signIn.setOnClickListener(new View.OnClickListener(){
-                                      @Override
-                                      public void onClick(View v) {
-                                          String name = ((TextView) findViewById(R.id.activitySignUp_name)).getText().toString();
-                                          String uniqueID = Settings.Secure.getString(context.getContentResolver(),
-                                                  Settings.Secure.ANDROID_ID);
-                                          ParseUser user = new ParseUser();
-                                          user.setUsername(uniqueID);
-                                          user.setPassword(uniqueID);
-                                          user.put("name", name);
-                                          user.signUpInBackground(new SignUpCallback() {
-                                              public void done(ParseException e) {
-                                                  if (e == null) {
-                                                      startActivity(new Intent(context, MainActivity.class));
-                                                  } else {
-                                                      AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
-                                                      dlgAlert.setTitle("Unable to sign up");
-                                                      dlgAlert.setMessage(e.getMessage());
-                                                      dlgAlert.create().show();
-                                                  }
-                                              }
-                                          });
-                                      }
+            @Override
+            public void onClick(View v) {
+                String name = ((TextView) findViewById(R.id.activitySignUp_name)).getText().toString();
+                String uniqueID = Settings.Secure.getString(
+                        context.getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+                ParseUser user = new ParseUser();
+                user.setUsername(uniqueID);
+                user.setPassword(uniqueID);
+                user.put("name", name);
+                user.signUpInBackground(new SignUpCallback() {
+                    public void done(ParseException e) {
+                        if (e == null) { // no errors!
+                            Intent mainIntent = new Intent(context, MainActivity.class);
+                            startActivity(mainIntent);
+                            finish();
+                        } else {
+                            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
+                            dlgAlert.setTitle("Unable to sign up");
+                            dlgAlert.setMessage(e.getMessage());
+                            dlgAlert.create().show();
+                        }
+                    }
+                });
+            }
 
-                                  }
-
-            );
+        });
     }
 
 
