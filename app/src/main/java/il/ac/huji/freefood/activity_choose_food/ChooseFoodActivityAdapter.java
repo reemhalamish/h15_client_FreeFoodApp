@@ -1,13 +1,21 @@
-package il.ac.huji.freefood;
+package il.ac.huji.freefood.activity_choose_food;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.data.FoodListItem;
 
 /**
  * Created by Reem on 30/04/2015.
@@ -19,6 +27,7 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
     protected int _itemId;
     protected Context _context;
     protected View.OnTouchListener _dismissListener;
+    protected Format formatter;
 
     public ChooseFoodActivityAdapter(
                         Context context,
@@ -33,12 +42,15 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
         this._objects = objects;
         this._dismissListener = listener;
 
+//        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter = new SimpleDateFormat("EEEE HH:mm", Locale.getDefault());
+
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View view = convertView;
-        if (view == null) {
+        if (view == null) { // create the view from scratch (else - view exists, just update)
             LayoutInflater inflater = LayoutInflater.from(getContext());
             view = inflater.inflate(R.layout.choose_food_one_row, parent, false);
         }
@@ -50,10 +62,22 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
 
         FoodListItem curItem = this._objects.get(position);
         TextView txtTitle = (TextView) view.findViewById(R.id.choose_food_title);
+        TextView txtOther = (TextView) view.findViewById(R.id.choose_food_other);
+        ImageView thumbnail = (ImageView) view.findViewById(R.id.choose_food_picture);
+
         txtTitle.setText(curItem.getDescription());
+        Date createdAt = curItem.getCreatedAt();
+        if (createdAt != null)
+            txtOther.setText(formatter.format(createdAt));
+        thumbnail.setImageResource(curItem.getThumbnail().toDrawableID());
+
         view.setTag(position);
 
         return view;
     }
 
+    public void updatedList() {
+        notifyDataSetChanged();
     }
+
+}

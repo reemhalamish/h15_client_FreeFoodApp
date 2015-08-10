@@ -1,4 +1,4 @@
-package il.ac.huji.freefood;
+package il.ac.huji.freefood.activities_one_class;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,15 +14,9 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.data.ImportantDataSaver;
 
-/**
- * A login screen that offers login via email/password and via Google+ sign in.
- * <p/>
- * ************ IMPORTANT SETUP NOTES: ************
- * In order for Google+ sign in to work with your app, you must first go to:
- * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
- * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
- */
 public class SignUpActivity extends Activity {
 
     /**
@@ -37,18 +31,20 @@ public class SignUpActivity extends Activity {
         signIn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String name = ((TextView) findViewById(R.id.activitySignUp_name)).getText().toString();
+                final String name = ((TextView) findViewById(R.id.activitySignUp_name)).getText().toString();
                 String uniqueID = Settings.Secure.getString(
                         context.getContentResolver(),
                         Settings.Secure.ANDROID_ID);
-                ParseUser user = new ParseUser();
+                final ParseUser user = new ParseUser();
                 user.setUsername(uniqueID);
                 user.setPassword(uniqueID);
                 user.put("name", name);
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
                         if (e == null) { // no errors!
+                            ImportantDataSaver.getInstance().setUser(user);
                             Intent mainIntent = new Intent(context, MainActivity.class);
+                            mainIntent.putExtra("name", name);
                             startActivity(mainIntent);
                             finish();
                         } else {

@@ -1,24 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ChooseFoodActivity">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8">
-    <ListView android:id="@+id/lv_FoodShowList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/ib_no_food_addfood_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/no_food_found" />
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -27,21 +29,7 @@
             android:layout_weight="0.5">
 
             <ImageButton
-                android:id="@+id/ib_showfood_clear"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/content_des_clear_list_button"
-                android:scaleType="centerInside"
-                android:src="@drawable/trash_icon" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/ib_showfood_refresh"
+                android:id="@+id/ib_no_food_checkagain_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/content_des_refresh_list_button"
@@ -55,7 +43,7 @@
             android:layout_weight="0.5">
 
             <ImageButton
-                android:id="@+id/ib_showfood_back"
+                android:id="@+id/ib_no_food_back"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"

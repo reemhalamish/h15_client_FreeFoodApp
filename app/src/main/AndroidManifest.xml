@@ -25,12 +25,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".unused.SwipeFragmentsActivity" />
-        <activity android:name=".ChooseFoodActivity" />
-        <activity android:name=".AddFoodActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities_one_class.MainActivity" />
+        <activity android:name=".activities_one_class.NoFoodFoundActivity" />
+        <activity android:name=".activity_choose_food.ChooseFoodActivity" />
+        <activity android:name=".activities_one_class.AddFoodActivity" />
+        <activity android:name=".activities_one_class.SignUpActivity" />
+        <activity android:name=".activities_one_class.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -61,14 +61,11 @@
             </intent-filter>
         </receiver>
 
-        <!--<receiver android:name="com.parse.ParseBroadcastReceiver"-->
-        <!--android:exported="false">-->
-        <!--<intent-filter>-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
-
         <meta-data
             android:name="com.parse.push.notification_icon"
-            android:resource="@drawable/ic_launcher" />
+            android:resource="@drawable/pooh_icon" />
+
+        <!--TODO once it was android:resource="@drawable/ic_launcher" />-->
+
     </application>
 </manifest>

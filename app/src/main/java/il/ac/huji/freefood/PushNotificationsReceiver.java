@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
 
+import il.ac.huji.freefood.activities_one_class.MainActivity;
+
 /**
  * Created by reem on 7/29/15.
  * The receiver. One day it will maybe catch notifications and will update the FoodList...

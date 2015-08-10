@@ -1,23 +1,25 @@
-package il.ac.huji.freefood;
+package il.ac.huji.freefood.activities_one_class;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+
+import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.activity_choose_food.ChooseFoodActivity;
 
 
 public class MainActivity extends ActionBarActivity {
     final static int REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ImageButton btnHungry = (ImageButton) findViewById(R.id.main_image_hungry);
         ImageButton btnAddFood = (ImageButton) findViewById(R.id.main_image_add_food);
         btnAddFood.setOnClickListener(new View.OnClickListener() {
@@ -32,19 +34,11 @@ public class MainActivity extends ActionBarActivity {
                 callActivityHungry();
             }
         });
-        TextView personName = (TextView) findViewById(R.id.person_name);
-        String name = getIntent().getStringExtra("name");
-        if (name == null){
-            personName.setVisibility(View.INVISIBLE);
-        }
-        else{
-            personName.setText("Hello "+name);
-        }
     }
 
     protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
-        startActivity(addItemIntent);
+        startActivity(addItemIntent); // TODO for result
     }
     protected void callActivityHungry() {
         Intent addItemIntent = new Intent(this, ChooseFoodActivity.class);
@@ -89,15 +83,15 @@ public class MainActivity extends ActionBarActivity {
     /**
      * back button from home will exit the app. api 6+
      */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-//            Log.i("back", "back pressed");
-//            Log.d("back", "back pressed");
-//            finish();
-//            System.exit(0);
-//            return true;
-//        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+////        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+////            Log.i("back", "back pressed");
+////            Log.d("back", "back pressed");
+////            finish();
+////            System.exit(0);
+////            return true;
+////        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

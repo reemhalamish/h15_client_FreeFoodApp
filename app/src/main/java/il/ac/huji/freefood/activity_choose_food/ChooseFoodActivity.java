@@ -1,79 +1,125 @@
-package il.ac.huji.freefood;
+package il.ac.huji.freefood.activity_choose_food;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-
 import java.util.List;
+
+import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.activities_one_class.NoFoodFoundActivity;
+import il.ac.huji.freefood.data.FoodListItem;
+import il.ac.huji.freefood.data.SingletonFoodList;
 
 /**
  * Created by Elyasaf on 4/30/2015.
  *
  * the activity that chooses food
  */
-public class ChooseFoodActivity extends Activity {
-
+public class ChooseFoodActivity extends Activity// implements LoaderManager.LoaderCallbacks<List<FoodListItem>> {
+{
     public View.OnTouchListener dismissListener;
-    protected List<FoodListItem> foodList;
     protected ChooseFoodActivityAdapter aa;
+    protected Handler listChangedHandler;
+    protected ImageButton refreshButton;
+    protected ImageButton clearAllButton;
+    protected ImageButton backButton;
+    protected ListView lv_foodList;
+    protected List<FoodListItem> listFromSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_food);
+        Log.d("no_food", "choose food called");
+        lv_foodList = (ListView) findViewById(R.id.lv_FoodShowList);
         final Context context = this;
 
-        setContentView(R.layout.activity_loading);
 
-        ImageView img = (ImageView)findViewById(R.id.iv_loader);
-        img.setBackgroundResource(R.drawable.loading_animation);
+        // set the touch-listener for every item in the list
+        dismissListener = createDismissListener();
 
-        AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
-        frameAnimation.start();
+        // set the adapter
+        listFromSingleton = SingletonFoodList.getInstance().getClientFoodListItems();
+        aa = new ChooseFoodActivityAdapter(context, R.layout.choose_food_one_row, R.id.choose_food_picture, listFromSingleton, dismissListener);
+        lv_foodList.setAdapter(aa);
 
-
-        SingletonFoodList.getInstance().getList(new FindCallback<FoodListItem>() {
-
+        // set the handler
+        listChangedHandler = new Handler() {
             @Override
-            public void done(List<FoodListItem> foodListItems, ParseException e) {
-                if (foodListItems == null) {
-                    ImageView img = (ImageView) findViewById(R.id.iv_loader);
-                    img.setBackgroundResource(R.drawable.hungry);
-                } else {
-                    onLoadList(foodListItems);
-                }
+            public void handleMessage(Message msg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        aa.updatedList();
+                        if (aa.getCount() == 0) {
+                            goto_no_food_activity();
+                        }
+                    }
+                });
+            }
+        };
+        SingletonFoodList.getInstance().registerHandler(listChangedHandler);
+
+
+        // set the refresh button
+        refreshButton = (ImageButton) findViewById(R.id.ib_showfood_refresh);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SingletonFoodList.getInstance().getOnlyNewElementsFromParse();
+                // it will automatically get inside this list via the handler
+                // TODO add some graphic of work?
+                // i can add them at the layer of the button. radio-waves-inside-out style :)
             }
         });
 
+        //set the clear-all button
+        clearAllButton = (ImageButton) findViewById(R.id.ib_showfood_clear);
+        clearAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SingletonFoodList.getInstance().clearAndUnpinAllItems();
+                // it will automatically get inside this list via the handler
+                // TODO add an alert!!
+
+                // TODO add some visuality?
+                // i can add somthing like the garbage-can is tilting
+            }
+        });
+
+        //set the back button
+        backButton = (ImageButton) findViewById(R.id.ib_showfood_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
+
     }
 
-    protected void onLoadList(List<FoodListItem> foodListItems) {
-        final Context context = this;
-        this.foodList = foodListItems;
-
-        setContentView(R.layout.activity_show_food);
-        ListView lv_foodList = (ListView) findViewById(R.id.lv_FoodShowList);
-
-        // set the listener
-
-        dismissListener = createDismissListener();
-
-        aa = new ChooseFoodActivityAdapter(context, R.layout.choose_food_one_row, R.id.choose_food_picture, foodListItems, dismissListener);
-        lv_foodList.setAdapter(aa);
+    private void goto_no_food_activity() {
+        Intent noFoodFound = new Intent(this, NoFoodFoundActivity.class);
+        startActivity(noFoodFound);
+        finish(); // to get it out of the activities stack
     }
 
     protected int getScreenWidth() {
@@ -93,10 +139,8 @@ public class ChooseFoodActivity extends Activity {
 
     protected void deleteFoodListItem(int index) {
         Log.d("delete", "start");
-        this.foodList.remove(index);
-        Log.d("delete", "len:" + foodList.size());
-        aa.notifyDataSetChanged();
-        Log.d("delete", "finished");
+        SingletonFoodList.getInstance().removeItem(index);
+        // update will be via the singleton and the handler
     }
 
     protected View.OnTouchListener createDismissListener() {
@@ -132,17 +176,12 @@ public class ChooseFoodActivity extends Activity {
                         // create fade-out animation and call delete() at the end
                         Animation shrinkAnimation = AnimationUtils.loadAnimation(context, R.anim.shrink_to_middle);
                         shrinkAnimation.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
                             public void onAnimationStart(Animation arg0) {
                             }
 
-                            @Override
                             public void onAnimationRepeat(Animation arg0) {
                             }
-
-                            @Override
                             public void onAnimationEnd(Animation arg0) {
-                                Log.d("animation", "calling delete");
                                 tv_dismissText.setTextColor(Color.WHITE);
                                 tv_dismissText.setAlpha(0);
                                 deleteFoodListItem(index_of_me);
@@ -160,7 +199,6 @@ public class ChooseFoodActivity extends Activity {
 
 
                 if (padding != 0) {
-//                    deleteFoodListItem(index_of_me);
                     tv_dismissText.setAlpha(Math.min(Math.abs(4.0f * padding) / screen_width, 1.0f));
                     if (Math.abs(padding) >= CRITICAL_PADDING) {
                         tv_dismissText.setTextColor(Color.RED);
@@ -173,4 +211,23 @@ public class ChooseFoodActivity extends Activity {
             }
         };
     }
+
+    @Override
+    protected void onResume() {
+        if (aa.getCount() == 0) {
+            goto_no_food_activity();
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        SingletonFoodList.getInstance().removeHandler(listChangedHandler);
+        listChangedHandler = null;
+        listFromSingleton = null;
+        dismissListener = null;
+        aa = null;
+        super.onDestroy();
+    }
+
 }

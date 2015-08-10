@@ -13,5 +13,18 @@
     <string name="hello_world">Hello world!</string>
     <string name="addActivityTitle">Found free food!</string>
     <string name="choose_food_row_dismiss_question">Dismiss?</string>
+    <string name="add_food_description">Description\n\nwhere is the food?\nfor how many people?\nspecial notes?</string>
+    <string name="content_des_pooh">pooh icon</string>
+    <string name="content_des_drinks">drinks icon</string>
+    <string name="content_des_coffee">coffee</string>
+    <string name="content_des_pizza">pizza icon</string>
+    <string name="add_food_title">what Food?</string>
+    <string name="add_food_publish_app">Publish to all other users in the app</string>
+    <string name="add_food_publish_both">Publish Both!</string>
+    <string name="add_food_publish_fb">publish only to facebook friends</string>
+    <string name="btn_back">Back</string>
+    <string name="content_des_clear_list_button">clear the list</string>
+    <string name="content_des_refresh_list_button">refresh the list</string>
+    <string name="content_des_add_food_button">add another food</string>
 
 </resources>

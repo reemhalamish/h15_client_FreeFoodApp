@@ -1,4 +1,4 @@
-package il.ac.huji.freefood;
+package il.ac.huji.freefood.unused;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.data.FoodListItem;
+import il.ac.huji.freefood.data.SingletonFoodList;
+
 /**
  * Created by Reem on 30/04/2015.
  *
@@ -31,8 +35,6 @@ public class AddFoodActivity extends Activity {
     private EditText placeInBuilding;
     private EditText description;
     private EditText numOfPeople;
-
-    //TODO: onCreate(), spinner for buildings, make it pretty!!
 
     @Override
     public void onCreate(Bundle unused) {
@@ -92,7 +94,7 @@ public class AddFoodActivity extends Activity {
                         description.getText().toString());
                 SingletonFoodList.getInstance().addToList(foodListItem);
                 int SUCCESS = 1;
-                finishActivity(SUCCESS);
+
             }
         });
     }
