@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.activity_add_food.AddFoodActivity;
 import il.ac.huji.freefood.activity_choose_food.ChooseFoodActivity;
 import il.ac.huji.freefood.data.SingletonFoodList;
 

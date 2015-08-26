@@ -1,88 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-    <Spinner
-        android:id="@+id/activityAddFood_spn_pictures"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:spinnerMode="dialog" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/activityAddFood_spn_building"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/activityAddFood_spn_pictures"
-        android:spinnerMode="dialog" />
-
-    <EditText
-        android:id="@+id/activityAddFood_edt_inside_building"
+    <ScrollView
+        android:id="@+id/sv_add_scroll"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/activityAddFood_spn_building"
-        android:hint="@string/ActivityAddFood_insideBuildingHint"
-     />
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
 
-    <EditText
-        android:id="@+id/activityAddFood_edt_description"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/et_add_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/add_food_title"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="40"
+                android:selectAllOnFocus="true"
+                android:textSize="40sp" />
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_add_thumbnails"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_views">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_drinks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:alpha=".15"
+                        android:contentDescription="@string/content_des_drinks"
+                        android:src="@drawable/drinks" />
+
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_coffee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:alpha=".15"
+                        android:contentDescription="@string/content_des_coffee"
+                        android:src="@drawable/coffee" />
+
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_beer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:alpha=".15"
+                        android:contentDescription="@string/content_des_beer"
+                        android:src="@drawable/beer" />
+
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_pooh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/content_des_pooh"
+                        android:src="@drawable/pooh_icon" />
+
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_pizza"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:alpha=".15"
+                        android:contentDescription="@string/content_des_pizza"
+                        android:src="@drawable/pizza" />
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_sandwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:alpha=".15"
+                        android:contentDescription="sandwitch"
+                        android:src="@drawable/sandwich" />
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_cake"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:alpha=".15"
+                        android:contentDescription="cake"
+                        android:src="@drawable/cake" />
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_cookies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:alpha=".15"
+                        android:contentDescription="cookies"
+                        android:src="@drawable/cookies" />
+                    <ImageButton
+                        android:id="@+id/ib_add_thmb_fruits"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:alpha=".15"
+                        android:contentDescription="fruits"
+                        android:src="@drawable/fruits" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
+            <EditText
+                android:id="@+id/et_add_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_views"
+                android:gravity="top"
+                android:hint="@string/add_food_description"
+                android:inputType="textMultiLine"
+                android:lines="7"
+                android:maxLength="500"
+                android:selectAllOnFocus="true"
+                android:textSize="25sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/activityAddFood_edt_inside_building"
-        android:hint="@string/ActivityAddFood_description_hint"
-    />
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/activityAddFood_bg_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/activityAddFood_edt_description"
-        android:src="@drawable/pooh_giving_flower" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
 
-    <Button
-        android:id="@+id/activityAddFood_send_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="Add food!"
-        />
-    <Button
-        android:id="@+id/activityAddFood_cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="cancel"
-        />
+            <ImageButton
+                android:id="@+id/ib_add_publish"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:contentDescription="@string/content_des_add_food_button"
+                android:scaleType="centerInside"
+                android:src="@drawable/add_icon" />
+        </RelativeLayout>
 
-    <EditText
-        android:id="@+id/activityAddFood_num_people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:ems="2"
-        android:inputType="number"
-        android:text="3"
-        android:textAlignment="textEnd"
-        android:textDirection="ltr" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
 
-    <TextView
-        android:id="@+id/activityAddFood_num_people_hint_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/activityAddFood_num_people"
-        android:layout_toLeftOf="@+id/activityAddFood_num_people"
-        android:layout_toStartOf="@+id/activityAddFood_num_people"
-        android:text="For how many people?"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-</RelativeLayout>
+            <ImageButton
+                android:id="@+id/ib_add_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:contentDescription="@string/btn_back"
+                android:scaleType="centerInside"
+                android:src="@drawable/back_arrow_light" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

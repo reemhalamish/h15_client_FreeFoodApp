@@ -17,8 +17,9 @@
     <string name="content_des_pooh">pooh icon</string>
     <string name="content_des_drinks">drinks icon</string>
     <string name="content_des_coffee">coffee</string>
+    <string name="content_des_beer">beer</string>
     <string name="content_des_pizza">pizza icon</string>
-    <string name="add_food_title">what Food?</string>
+    <string name="add_food_title">What Food?</string>
     <string name="add_food_publish_app">Publish to all other users in the app</string>
     <string name="add_food_publish_both">Publish Both!</string>
     <string name="add_food_publish_fb">publish only to facebook friends</string>

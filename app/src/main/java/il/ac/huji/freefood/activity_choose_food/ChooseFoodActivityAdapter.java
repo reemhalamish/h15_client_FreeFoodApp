@@ -1,6 +1,7 @@
 package il.ac.huji.freefood.activity_choose_food;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
         thumbnail.setImageResource(curItem.getThumbnail().toDrawableID());
 
         view.setTag(position);
+        Log.d("touch", "setting tag for "+position);
 
         return view;
     }

@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
+import il.ac.huji.freefood.GPS_tracker_Activity;
 import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.activity_add_food.AddFoodActivity;
 import il.ac.huji.freefood.activity_choose_food.ChooseFoodActivity;
 
 
@@ -17,6 +19,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivity(new Intent(MainActivity.this, GPS_tracker_Activity.class));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

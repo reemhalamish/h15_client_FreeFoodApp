@@ -1,5 +1,6 @@
 package il.ac.huji.freefood.data;
 
+import android.location.Location;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.util.Log;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
@@ -32,11 +34,13 @@ public class SingletonFoodList {
     private static final int REMOVE_ITEM_BY_REFERENCE = 6;
     private static final int REPLACE_WHOLE_LIST = 7;
     private static final int REMOVE_WHOLE_LIST = 8;
+    private static final double DISTANCE_OF_NEW_FOOD = 50000; // in meters. its 50km
     private static SingletonFoodList instance;
     private Application application;
     private List<FoodListItem> clientFoodListItems;
     private List<Handler> listChangesHandlers;
     private Date lastUpdated;
+    private ParseGeoPoint currentPosition;
 
 
     protected SingletonFoodList() {
@@ -48,6 +52,22 @@ public class SingletonFoodList {
             instance = new SingletonFoodList();
         }
         return instance;
+    }
+
+
+    public void init(Application app, Date lastUpdatedFromApp, Location lastKnowLocation) {
+        application = app;
+        lastUpdated = getYesterday(); // old enough
+        if (lastUpdatedFromApp != null && lastUpdatedFromApp.after(lastUpdated)) //d1.after(d2) == d1.isAfter(d2)
+            this.lastUpdated = lastUpdatedFromApp;
+        updatePosition(lastKnowLocation);
+        getListFromLocal();
+    }
+
+    public void updatePosition(Location lastKnownLocation) {
+        double lat = lastKnownLocation.getLatitude();
+        double lng = lastKnownLocation.getLongitude();
+        currentPosition = new ParseGeoPoint(lat, lng);
     }
 
     /**
@@ -116,6 +136,7 @@ public class SingletonFoodList {
 
         ParseQuery<FoodListItem> query = ParseQuery.getQuery(FoodListItem.class);
         query.whereGreaterThan("createdAt", lastUpdated);
+        query.whereWithinKilometers("location", currentPosition, DISTANCE_OF_NEW_FOOD);
         query.orderByDescending("createdAt");
         query.findInBackground(parseCallback);
 
@@ -161,24 +182,14 @@ public class SingletonFoodList {
 
         ParseQuery<FoodListItem> query = ParseQuery.getQuery(FoodListItem.class);
         query.whereGreaterThan("createdAt", dateToSearchFrom);
+        query.whereWithinKilometers("location", currentPosition, DISTANCE_OF_NEW_FOOD);
         query.orderByDescending("createdAt");
         query.findInBackground(parseCallback);
     }
 
-    public void init(Application app, Date lastUpdatedFromApp) {
-        application = app;
-        lastUpdated = getYesterday(); // old enough
-        if (lastUpdatedFromApp != null && lastUpdatedFromApp.after(lastUpdated)) //d1.after(d2) == d1.isAfter(d2)
-            this.lastUpdated = lastUpdatedFromApp;
-        getListFromLocal();
-    }
 
     public List<FoodListItem> getClientFoodListItems() {
         return clientFoodListItems;
-    }
-
-    public synchronized void removeItem(int position) {
-        messWithList(REMOVE_ITEM_IN_POSITION, null, null, position);
     }
 
     public void registerHandler(Handler newbie) {
@@ -265,21 +276,23 @@ public class SingletonFoodList {
     }
 
     public void addToList(final FoodListItem item) {
-        messWithList(ADD_ONE_ITEM_FIRST, item, null, 0);
-        item.saveEventually(new SaveCallback() {
-            /*
-                the thing is, It can be downloaded from parse now. so next time of update it will get
-                as one of the results.
+        if (item.isReadyToPublish()) {
+            messWithList(ADD_ONE_ITEM_FIRST, item, null, 0);
+            item.saveEventually(new SaveCallback() {
+                /*
+                    the thing is, It can be downloaded from parse now. so next time of update it will get
+                    as one of the results.
 
-                Solution: remove it from the list now,
-                TODO jump a little window that "food is shared!"
-                then re-query parse
-             */
-            @Override
-            public void done(ParseException e) {
-                getOnlyNewElementsFromParse(item);
-            }
-        });
+                    Solution: remove it from the list now,
+                    TODO jump a little window that "food is shared!"
+                    then re-query parse
+                 */
+                @Override
+                public void done(ParseException e) {
+                    getOnlyNewElementsFromParse(item);
+                }
+            });
+        }
     }
 
     public void clearAndUnpinAllItems() {
@@ -292,6 +305,10 @@ public class SingletonFoodList {
             }
         });
         messWithList(REMOVE_WHOLE_LIST, null, null, 0);
+    }
+
+    public synchronized void removeItem(int position) {
+        messWithList(REMOVE_ITEM_IN_POSITION, null, null, position);
     }
 
 
@@ -308,6 +325,7 @@ public class SingletonFoodList {
         cal.add(Calendar.DATE, daysToDecrement);
         return cal.getTime(); // again get back date object
     }
+
 }
 
 /*
@@ -315,7 +333,6 @@ TODO:
 * implement such a way that when new food is getting, it is valid for an hour and then gets deleted from parse
 * option to report food as "over"?
 * get the food from gps?
-* update the entire AddFoodActivity to be normal
 * save locally the last-updated time ( == when the user pressed "refresh" last time? when the last query came from parse?)
 * add facebook connection
 * each facebook client will hae their own channel, each of your facebook friends is subscribed to your channel,

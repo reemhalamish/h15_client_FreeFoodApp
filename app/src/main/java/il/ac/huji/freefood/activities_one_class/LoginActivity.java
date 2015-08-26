@@ -18,6 +18,7 @@ import com.parse.ParseUser;
 import java.io.IOException;
 
 import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.activity_add_food.AddFoodActivity;
 import il.ac.huji.freefood.data.ImportantDataSaver;
 
 
@@ -31,7 +32,11 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
+
+//        startActivity(new Intent(this, AddFoodActivity.class));
+//        if (1 == 1) {finish(); return;} //TODO
+
         try {
             final Context context = this;
 

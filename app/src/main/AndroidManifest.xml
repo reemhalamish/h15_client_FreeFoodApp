@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <permission
         android:name="il.ac.huji.freefood.permission.C2D_MESSAGE"
@@ -23,12 +24,14 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        >
 
         <activity android:name=".activities_one_class.MainActivity" />
         <activity android:name=".activities_one_class.NoFoodFoundActivity" />
         <activity android:name=".activity_choose_food.ChooseFoodActivity" />
-        <activity android:name=".activities_one_class.AddFoodActivity" />
+        <activity android:name=".activity_add_food.AddFoodActivity" />
+        <activity android:name=".GPS_tracker_Activity" />
         <activity android:name=".activities_one_class.SignUpActivity" />
         <activity android:name=".activities_one_class.LoginActivity">
             <intent-filter>
@@ -36,6 +39,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".LocationCaptureService"
+            android:exported="false"/>
 
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.GcmBroadcastReceiver"
@@ -64,8 +70,15 @@
         <meta-data
             android:name="com.parse.push.notification_icon"
             android:resource="@drawable/pooh_icon" />
-
         <!--TODO once it was android:resource="@drawable/ic_launcher" />-->
+
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA" />
+
 
     </application>
 </manifest>

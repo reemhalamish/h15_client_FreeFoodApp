@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -59,24 +60,6 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
         aa = new ChooseFoodActivityAdapter(context, R.layout.choose_food_one_row, R.id.choose_food_picture, listFromSingleton, dismissListener);
         lv_foodList.setAdapter(aa);
 
-        // set the handler
-        listChangedHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        aa.updatedList();
-                        if (aa.getCount() == 0) {
-                            goto_no_food_activity();
-                        }
-                    }
-                });
-            }
-        };
-        SingletonFoodList.getInstance().registerHandler(listChangedHandler);
-
-
         // set the refresh button
         refreshButton = (ImageButton) findViewById(R.id.ib_showfood_refresh);
         refreshButton.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +99,27 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
 
     }
 
+    @Override
+    protected void onStart() {
+        // set the handler
+        listChangedHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        aa.updatedList();
+                        if (aa.getCount() == 0) {
+                            goto_no_food_activity();
+                        }
+                    }
+                });
+            }
+        };
+        SingletonFoodList.getInstance().registerHandler(listChangedHandler);
+        super.onStart();
+    }
+
     private void goto_no_food_activity() {
         Intent noFoodFound = new Intent(this, NoFoodFoundActivity.class);
         startActivity(noFoodFound);
@@ -144,10 +148,15 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     }
 
     protected View.OnTouchListener createDismissListener() {
+//        return null;
+
+        // TODO need to use all of this?
         final Context context = this;
         return new View.OnTouchListener() {
+            private Rect rect;
             private final float screen_width = getScreenWidth();
-            private final float CRITICAL_PADDING = screen_width / 4.0f;
+            private final float CRITICAL_PADDING = screen_width / 4f;
+            private final float MIN_FOR_STOP_LIST_SCROLL_LISTENER = screen_width / 100f;
             private int padding = 0;
             private int initialx = 0;
             private int currentx = 0;
@@ -161,17 +170,22 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                 final TextView tv_dismissText = (TextView) v.findViewById(R.id.tv_choose_food_dismiss);
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    rect = new Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
                     padding = 0;
                     initialx = (int) event.getX();
                     currentx = (int) event.getX();
-                    //viewHolder = ((ViewHolder) v.getTag());
+                    return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     currentx = (int) event.getX();
                     padding = currentx - initialx;
+                    lv_foodList.requestDisallowInterceptTouchEvent(true); // lock the list listener
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+
+
+                    if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+
                     if (Math.abs(padding) >= CRITICAL_PADDING) {
                         // create fade-out animation and call delete() at the end
                         Animation shrinkAnimation = AnimationUtils.loadAnimation(context, R.anim.shrink_to_middle);
@@ -191,6 +205,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                     } else {
                         tv_dismissText.setTextColor(Color.WHITE);
                         tv_dismissText.setAlpha(0);
+                        //TODO if padding < CRITICAL_SOMETHING then open intent that will open the foodItem description activity
                     }
                     padding = 0;
                     initialx = 0;
@@ -221,8 +236,13 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         SingletonFoodList.getInstance().removeHandler(listChangedHandler);
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
         listChangedHandler = null;
         listFromSingleton = null;
         dismissListener = null;
@@ -230,4 +250,39 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
         super.onDestroy();
     }
 
+    public View.OnTouchListener getListTouchListener() {
+        return new View.OnTouchListener() {
+            float xOld = Float.NaN, yOld = Float.NaN, xDelta, yDelta;
+            private final float screen_width = getScreenWidth();
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                Log.d("touch", "touch view: " + view.toString());
+                final int index_of_me = lv_foodList.pointToPosition((int) event.getX(), (int) event.getY());
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        xOld = event.getX();
+                        yOld= event.getY();
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        xDelta = Math.abs(event.getX() - xOld);
+                        yDelta = Math.abs(event.getY() - yOld);
+                        view.setAlpha(xDelta);
+
+                    case MotionEvent.ACTION_UP:
+                        xDelta = Math.abs(event.getX() - xOld);
+                        yDelta = Math.abs(event.getY() - yOld);
+                        if (xDelta > yDelta) {
+                            deleteFoodListItem(index_of_me);
+                            Log.d("touch", "deleted " + index_of_me);
+                            return true;
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+                return false;
+            }
+        };
+    }
 }
