@@ -6,6 +6,7 @@ package il.ac.huji.freefood;
  * (after getting closed, the app needs to restore communication to parse next time it gets opened)
  */
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -17,23 +18,50 @@ import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.SaveCallback;
 
+import java.io.File;
 import java.util.Date;
 
-import il.ac.huji.freefood.data.FoodListItem;
+import il.ac.huji.freefood.data.Food;
 import il.ac.huji.freefood.data.SingletonFoodList;
 
-public class Application extends android.app.Application {
+public class FreeFoodApp extends android.app.Application {
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+
+    public static boolean deleteInstallationCache(Context context) {
+        boolean deletedParseFolder = false;
+        File cacheDir = context.getCacheDir();
+        File parseApp = new File(cacheDir.getParent(), "app_Parse");
+        File installationId = new File(parseApp, "installationId");
+        File currentInstallation = new File(parseApp, "currentInstallation");
+        if (installationId.exists()) {
+            deletedParseFolder = deletedParseFolder || installationId.delete();
+        }
+        if (currentInstallation.exists()) {
+            deletedParseFolder = deletedParseFolder && currentInstallation.delete();
+        }
+        return deletedParseFolder;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        ParseObject.registerSubclass(FoodListItem.class);
-        Parse.initialize(this, "dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb", "2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA");
+        final Context context = this;
+
+
+        // parse-related actions
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                // Enable Local Datastore.
+        Parse.enableLocalDatastore(context);
+        ParseObject.registerSubclass(Food.class);
+        Log.d("app", "reached1");
+        Parse.initialize(context, "dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb", "2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA");
+        Log.d("app", "reached2");
+        deleteInstallationCache(this);
         ParseInstallation.getCurrentInstallation().saveInBackground();
+        Log.d("app", "reached3");
         ParsePush.subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -44,11 +72,13 @@ public class Application extends android.app.Application {
                 }
             }
         });
+        Log.d("app", "reached4");
+
 
         //prepare the singleton
         Date lastUpdated;
         try {
-            prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            prefs = PreferenceManager.getDefaultSharedPreferences(FreeFoodApp.this);
             lastUpdated = new Date(prefs.getLong("freefood.lastUpdated", 0));
             Log.d("last updated", "got from sharedPref" + lastUpdated);
         } catch (Exception e) {
@@ -56,8 +86,10 @@ public class Application extends android.app.Application {
             lastUpdated = null;
             Log.d("last updated", e.getMessage());
         }
-        SingletonFoodList.getInstance().init(this, lastUpdated);
+        SingletonFoodList.getInstance().init(FreeFoodApp.this, lastUpdated);
 
+//
+//        }}).start();
 
     }
 

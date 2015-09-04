@@ -15,7 +15,6 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import il.ac.huji.freefood.R;
-import il.ac.huji.freefood.data.ImportantDataSaver;
 
 public class SignUpActivity extends Activity {
 
@@ -42,7 +41,6 @@ public class SignUpActivity extends Activity {
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
                         if (e == null) { // no errors!
-                            ImportantDataSaver.getInstance().setUser(user);
                             Intent mainIntent = new Intent(context, MainActivity.class);
                             mainIntent.putExtra("name", name);
                             startActivity(mainIntent);

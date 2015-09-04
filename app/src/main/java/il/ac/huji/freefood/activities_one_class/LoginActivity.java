@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -18,7 +19,6 @@ import com.parse.ParseUser;
 import java.io.IOException;
 
 import il.ac.huji.freefood.R;
-import il.ac.huji.freefood.data.ImportantDataSaver;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -27,20 +27,27 @@ public class LoginActivity extends ActionBarActivity {
     private final static String NO_INTERNET_DIALOG_MSG = "We can't access the internet,\nCheck your internet connectivity and try again.\n\nFreeFood will close now";
     private final static String NO_INTERNET_DIALOG_BUTTON = "Ok";
 
+    private final static String TAG = "login";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        Log.d(TAG, "connection test1 " + test1());
+//        Log.d(TAG, "connection test2 " + test2());
+//        Log.d(TAG, "connection test3 " + test3());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         try {
             final Context context = this;
+            if (!connectedToInternet()) {
+                exitAppWithDialog(context);
+            }
 
             String uniqueID = Settings.Secure.getString(context.getContentResolver(),
                     Settings.Secure.ANDROID_ID);
             ParseUser.logInInBackground(uniqueID, uniqueID, new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
-                        ImportantDataSaver.getInstance().setUser(user);
                         TextView tv_underText = (TextView) findViewById(R.id.tv_login_undertext);
                         String username = user.getString("name");
                         if (username != null) {
@@ -56,12 +63,8 @@ public class LoginActivity extends ActionBarActivity {
                         }
 
                     } else {
-                        if (!connectedToInternet()) {
-                            exitAppWithDialog(context);
-                        } else {
-                            startActivity(new Intent(context, SignUpActivity.class));
-                            finish();
-                        }
+                        startActivity(new Intent(context, SignUpActivity.class));
+                        finish();
                     }
                 }
             });
@@ -72,6 +75,9 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     private boolean connectedToInternet() {
+        if (1 == 1) {
+            return true;
+        }
         Runtime runtime = Runtime.getRuntime();
         try {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
@@ -106,4 +112,45 @@ public class LoginActivity extends ActionBarActivity {
         dlg.create();
         dlg.show();
     }
+
+    public boolean test1() {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null &&
+                connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    public Boolean test2() {
+        try {
+            Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1    www.google.com");
+            int returnVal = p1.waitFor();
+            boolean reachable = (returnVal == 0);
+            if (reachable) {
+                return reachable;
+            } else {
+                Log.d(TAG, "No network available!");
+            }
+        } catch (Exception e) {
+
+            Log.e(TAG, "Error checking internet connection", e);
+        }
+        return false;
+    }
+
+    private boolean test3() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("internet", "IO " + e.getMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.e("internet", "Interrupt " + e.getMessage());
+        }
+        return false;
+    }
+
 }

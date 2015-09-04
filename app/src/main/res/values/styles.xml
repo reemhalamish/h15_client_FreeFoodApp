@@ -1,8 +1,8 @@
 <resources>
 
-    <style name="AppTheme" parent="Base.V11.Theme.AppCompat" />
+    <style name="AppTheme" parent="Theme.AppCompat" />
 
-    <style name="SpaceBetweenElements" parent="Base.V11.Theme.AppCompat.Light">
+    <style name="SpaceBetweenElements" parent="Theme.AppCompat.Light">
         <item name="android:layout_marginTop">100dp</item>
     </style>
 </resources>

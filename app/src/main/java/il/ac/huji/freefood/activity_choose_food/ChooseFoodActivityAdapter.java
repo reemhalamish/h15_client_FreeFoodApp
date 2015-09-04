@@ -15,15 +15,15 @@ import java.util.List;
 import java.util.Locale;
 
 import il.ac.huji.freefood.R;
-import il.ac.huji.freefood.data.FoodListItem;
+import il.ac.huji.freefood.data.Food;
 
 /**
  * Created by Reem on 30/04/2015.
  * adapter for any row in the foodListItems
  */
-public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
+public class ChooseFoodActivityAdapter extends ArrayAdapter<Food> {
     protected int _resurce;
-    protected List<FoodListItem> _objects;
+    protected List<Food> _objects;
     protected int _itemId;
     protected Context _context;
     protected View.OnTouchListener _dismissListener;
@@ -33,7 +33,7 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
                         Context context,
                         int resource,
                         int itemId,
-                        List<FoodListItem> objects,
+                        List<Food> objects,
                         View.OnTouchListener listener) {
         super(context, resource, itemId, objects);
         this._context = context;
@@ -60,12 +60,12 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<FoodListItem> {
 
         }
 
-        FoodListItem curItem = this._objects.get(position);
+        Food curItem = this._objects.get(position);
         TextView txtTitle = (TextView) view.findViewById(R.id.choose_food_title);
         TextView txtOther = (TextView) view.findViewById(R.id.choose_food_other);
         ImageView thumbnail = (ImageView) view.findViewById(R.id.choose_food_picture);
 
-        txtTitle.setText(curItem.getDescription());
+        txtTitle.setText(curItem.getTitle());
         Date createdAt = curItem.getCreatedAt();
         if (createdAt != null)
             txtOther.setText(formatter.format(createdAt));

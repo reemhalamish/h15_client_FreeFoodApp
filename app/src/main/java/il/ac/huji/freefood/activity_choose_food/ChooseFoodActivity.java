@@ -23,7 +23,7 @@ import java.util.List;
 
 import il.ac.huji.freefood.R;
 import il.ac.huji.freefood.activities_one_class.NoFoodFoundActivity;
-import il.ac.huji.freefood.data.FoodListItem;
+import il.ac.huji.freefood.data.Food;
 import il.ac.huji.freefood.data.SingletonFoodList;
 
 /**
@@ -40,7 +40,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     protected ImageButton clearAllButton;
     protected ImageButton backButton;
     protected ListView lv_foodList;
-    protected List<FoodListItem> listFromSingleton;
+    protected List<Food> listFromSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

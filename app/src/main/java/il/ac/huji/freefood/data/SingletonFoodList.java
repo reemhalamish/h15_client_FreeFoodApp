@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import il.ac.huji.freefood.Application;
+import il.ac.huji.freefood.FreeFoodApp;
 
 /**
  * Created by Ayala on 30/04/2015.
@@ -33,8 +33,8 @@ public class SingletonFoodList {
     private static final int REPLACE_WHOLE_LIST = 7;
     private static final int REMOVE_WHOLE_LIST = 8;
     private static SingletonFoodList instance;
-    private Application application;
-    private List<FoodListItem> clientFoodListItems;
+    private FreeFoodApp application;
+    private List<Food> clientFoodListItems;
     private List<Handler> listChangesHandlers;
     private Date lastUpdated;
 
@@ -57,10 +57,10 @@ public class SingletonFoodList {
      * by calling getListFromParse()
      */
     private void getListFromLocal() {
-        FindCallback<FoodListItem> localCallback = new FindCallback<FoodListItem>() {
+        FindCallback<Food> localCallback = new FindCallback<Food>() {
 
             @Override
-            public void done(List<FoodListItem> foodListItems, ParseException e) {
+            public void done(List<Food> foodListItems, ParseException e) {
                 if (e != null) {
                     Log.e("parse ds", "no food is in local datastore. trying to reach the internet");
                     Log.e("parse ds", e.getMessage());
@@ -80,7 +80,7 @@ public class SingletonFoodList {
                 }
             }
         };
-        ParseQuery<FoodListItem> query = ParseQuery.getQuery(FoodListItem.class);
+        ParseQuery<Food> query = ParseQuery.getQuery(Food.class);
         query.fromLocalDatastore();
         query.orderByDescending("createdAt");
         query.findInBackground(localCallback);
@@ -90,9 +90,9 @@ public class SingletonFoodList {
      * gets the items that were uploaded in the last day
      */
     private void getListFromParse() {
-        FindCallback<FoodListItem> parseCallback = new FindCallback<FoodListItem>() {
+        FindCallback<Food> parseCallback = new FindCallback<Food>() {
             @Override
-            public void done(List<FoodListItem> foodListItems, ParseException e) {
+            public void done(List<Food> foodListItems, ParseException e) {
                 if (e != null) {
                     Log.e("parse ds", "no food from parse.com");
                     Log.e("parse ds", e.getMessage());
@@ -114,7 +114,7 @@ public class SingletonFoodList {
         };
 
 
-        ParseQuery<FoodListItem> query = ParseQuery.getQuery(FoodListItem.class);
+        ParseQuery<Food> query = ParseQuery.getQuery(Food.class);
         query.whereGreaterThan("createdAt", lastUpdated);
         query.orderByDescending("createdAt");
         query.findInBackground(parseCallback);
@@ -130,7 +130,7 @@ public class SingletonFoodList {
      * @param toDelete if not null - will be deleted from the ORIGINAL clientlist
      *                 before inserting the results from the query
      */
-    private void getOnlyNewElementsFromParse(final FoodListItem toDelete) {
+    private void getOnlyNewElementsFromParse(final Food toDelete) {
         final Date dateToSearchFrom;
         if (lastUpdated != null) {
             dateToSearchFrom = lastUpdated;
@@ -138,9 +138,9 @@ public class SingletonFoodList {
             dateToSearchFrom = getYesterday();
         }
 
-        FindCallback<FoodListItem> parseCallback = new FindCallback<FoodListItem>() {
+        FindCallback<Food> parseCallback = new FindCallback<Food>() {
             @Override
-            public void done(List<FoodListItem> foodListItems, ParseException e) {
+            public void done(List<Food> foodListItems, ParseException e) {
                 if (e != null) {
                     Log.e("parse ds", "no food from try to update in parse.com");
                     Log.e("parse ds", e.getMessage());
@@ -159,13 +159,13 @@ public class SingletonFoodList {
         };
 
 
-        ParseQuery<FoodListItem> query = ParseQuery.getQuery(FoodListItem.class);
+        ParseQuery<Food> query = ParseQuery.getQuery(Food.class);
         query.whereGreaterThan("createdAt", dateToSearchFrom);
         query.orderByDescending("createdAt");
         query.findInBackground(parseCallback);
     }
 
-    public void init(Application app, Date lastUpdatedFromApp) {
+    public void init(FreeFoodApp app, Date lastUpdatedFromApp) {
         application = app;
         lastUpdated = getYesterday(); // old enough
         if (lastUpdatedFromApp != null && lastUpdatedFromApp.after(lastUpdated)) //d1.after(d2) == d1.isAfter(d2)
@@ -173,7 +173,7 @@ public class SingletonFoodList {
         getListFromLocal();
     }
 
-    public List<FoodListItem> getClientFoodListItems() {
+    public List<Food> getClientFoodListItems() {
         return clientFoodListItems;
     }
 
@@ -212,7 +212,7 @@ public class SingletonFoodList {
      * @param listOfItems if needed
      * @param position    if needed
      */
-    private synchronized void messWithList(int action, FoodListItem oneItem, List<FoodListItem> listOfItems, int position) {
+    private synchronized void messWithList(int action, Food oneItem, List<Food> listOfItems, int position) {
         switch (action) {
             case ADD_ONE_ITEM_FIRST:
                 if (oneItem == null)
@@ -239,7 +239,7 @@ public class SingletonFoodList {
             case REMOVE_ITEM_IN_POSITION:
                 if (position < 0 || clientFoodListItems == null || position >= clientFoodListItems.size())
                     return;
-                FoodListItem toRemove = clientFoodListItems.get(position);
+                Food toRemove = clientFoodListItems.get(position);
                 toRemove.unpinInBackground();
                 clientFoodListItems.remove(position);
                 break;
@@ -264,7 +264,7 @@ public class SingletonFoodList {
         Log.d("mess_with_list", "" + action + ": was completed successfully!");
     }
 
-    public void addToList(final FoodListItem item) {
+    public void addToList(final Food item) {
         messWithList(ADD_ONE_ITEM_FIRST, item, null, 0);
         item.saveEventually(new SaveCallback() {
             /*
@@ -283,7 +283,7 @@ public class SingletonFoodList {
     }
 
     public void clearAndUnpinAllItems() {
-        List<FoodListItem> allElements = new ArrayList<>(clientFoodListItems);
+        List<Food> allElements = new ArrayList<>(clientFoodListItems);
         // save a copy to unpin, the original will be cleared in a sec...
         ParseObject.unpinAllInBackground(allElements, new DeleteCallback() {
             @Override
