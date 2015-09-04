@@ -35,11 +35,12 @@ public class FreeFoodApp extends android.app.Application {
         File installationId = new File(parseApp, "installationId");
         File currentInstallation = new File(parseApp, "currentInstallation");
         if (installationId.exists()) {
-            deletedParseFolder = deletedParseFolder || installationId.delete();
+            deletedParseFolder = installationId.delete();
         }
         if (currentInstallation.exists()) {
             deletedParseFolder = deletedParseFolder && currentInstallation.delete();
         }
+
         return deletedParseFolder;
     }
 
@@ -60,8 +61,9 @@ public class FreeFoodApp extends android.app.Application {
         Parse.initialize(context, "dKryMiFlnWz1NQLyS6Jt2uG3YVf5nqtuQd1iffxb", "2Hg8c7CUgwNLMrnDS82BpJa3tIMK3Q7CFNUgSYrA");
         Log.d("app", "reached2");
         deleteInstallationCache(this);
+        Log.d("app", "reached3.0");
         ParseInstallation.getCurrentInstallation().saveInBackground();
-        Log.d("app", "reached3");
+        Log.d("app", "reached3.1");
         ParsePush.subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {
