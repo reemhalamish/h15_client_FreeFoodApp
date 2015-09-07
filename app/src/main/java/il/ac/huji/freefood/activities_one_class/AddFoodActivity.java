@@ -1,7 +1,9 @@
 package il.ac.huji.freefood.activities_one_class;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +14,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +26,7 @@ import java.util.List;
 import il.ac.huji.freefood.LocationCaptureService;
 import il.ac.huji.freefood.R;
 import il.ac.huji.freefood.data.FoodBuilder;
+import il.ac.huji.freefood.data.LocationSuperviser;
 import il.ac.huji.freefood.data.Thumbnail;
 
 /**
@@ -29,7 +35,7 @@ import il.ac.huji.freefood.data.Thumbnail;
  * This activity is showing up when the user presses the button "I'm hungry!" in the main activity
  */
 public class AddFoodActivity extends Activity {
-    private static final int ONE_SECOND_IN_MS = 1000;
+    private static final int DELAY_FOR_SCROLLING_IN_MS = 1000;
     private static final float ALPHA_FOR_THUMBNAILS = 0.5f;
     protected HorizontalScrollView scrollView;
 
@@ -74,14 +80,18 @@ public class AddFoodActivity extends Activity {
     }
 
     private boolean findLocation() {
+//        TODO:
+//              int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+//              if (ConnectionResult.SUCCESS == resultCode) {
+//        then call some other service to catch the location
+
         try {
             if (food_id == null) {
                 food_id = Long.valueOf(new Date().getTime());
+                FoodBuilder.getInstance().startFood(food_id);
             }
-            FoodBuilder.getInstance().startFood(food_id);
-            Intent findLocationIntent = new Intent(AddFoodActivity.this, LocationCaptureService.class);
-            findLocationIntent.putExtra(LocationCaptureService.FOOD_ID_TAG, food_id);
-            startService(findLocationIntent);
+
+            LocationSuperviser.startLocationServiceIfNeeded(this);
             return true;
         } catch (Exception error) {
             Log.e("location", error.getMessage());
@@ -112,12 +122,13 @@ public class AddFoodActivity extends Activity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FoodBuilder.getInstance().cancleFood(food_id);
+                FoodBuilder.getInstance().cancelFood(food_id);
                 food_id = null;
                 finish();
             }
         });
 
+        // TODO add some visuality?
         btn_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +136,12 @@ public class AddFoodActivity extends Activity {
                 String details = et_foodPlace.getText().toString();
                 FoodBuilder.getInstance().setFoodUI(food_id, image_id_chosen, title, details);
                 food_id = null;
-                finish();
+                if (ParseUser.getCurrentUser().getBoolean("prompt_on_share")) {
+                    promptTheUser(AddFoodActivity.this);
+                } else {
+                    Toast.makeText(AddFoodActivity.this, "working on it...", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
                 // FACEBOOK here will be some dialog to ask the user if they want to publish to world \ only fb \ both (with notifications)
             }
         });
@@ -178,7 +194,7 @@ public class AddFoodActivity extends Activity {
                 Log.d("scroll", "calling");
                 scrollView.smoothScrollTo(pooh_thumbnail.getLeft() - 80, 0);
             }
-        }, ONE_SECOND_IN_MS);
+        }, DELAY_FOR_SCROLLING_IN_MS);
     }
 
     private void initThumbnails() {
@@ -228,6 +244,40 @@ public class AddFoodActivity extends Activity {
         outState.putLong(LocationCaptureService.FOOD_ID_TAG, food_id);
         super.onSaveInstanceState(outState);
     }
+    private void promptTheUser(Context context) {
+        AlertDialog.OnClickListener show_once_listener = new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        ParseUser user = ParseUser.getCurrentUser();
+                        user.put("prompt_on_share", false);
+                        user.saveEventually();
+                        dialogInterface.dismiss();
+                        finish();
+                        break;
+                }
+            }
+        };
+        AlertDialog.OnCancelListener cancel_listener = new AlertDialog.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                dialogInterface.dismiss();
+            }
+        };
+
+
+        AlertDialog.Builder dlg = new AlertDialog.Builder(context);
+        dlg.setTitle("share new food");
+        dlg.setMessage("The food you just shared need more proccessing.\nWe will capture your location, and then we will upload the food to the cloud.\nMeanwhile you can travel in the app :)");
+        dlg.setPositiveButton("Got it! never show again", show_once_listener);
+        dlg.setCancelable(true);
+        dlg.setOnCancelListener(cancel_listener);
+        dlg.create();
+        dlg.show();
+    }
+
+
 }
 
 

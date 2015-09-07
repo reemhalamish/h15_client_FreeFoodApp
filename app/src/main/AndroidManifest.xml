@@ -17,7 +17,7 @@
 
 
     <application
-        android:name=".FreeFoodApp"
+        android:name=".FreeFoodApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -26,6 +26,7 @@
         <activity android:name=".activities_one_class.MainActivity" />
         <activity android:name=".activities_one_class.NoFoodFoundActivity" />
         <activity android:name=".activity_choose_food.ChooseFoodActivity" />
+        <activity android:name=".activities_one_class.FoodDetailsActivity" />
         <activity android:name=".activities_one_class.AddFoodActivity" />
         <activity android:name=".activities_one_class.SignUpActivity" />
         <activity android:name=".activities_one_class.LoginActivity">
@@ -59,6 +60,8 @@
                 <action android:name="com.parse.push.intent.DELETE" />
             </intent-filter>
         </receiver>
+
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAAMldpW6j6wFRd07Li1lX0tVgtNeFGc_g"/>
 
         <meta-data
             android:name="com.parse.push.notification_icon"

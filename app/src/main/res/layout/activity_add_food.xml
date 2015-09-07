@@ -83,7 +83,6 @@
                         android:alpha=".15"
                         android:contentDescription="@string/content_des_pizza"
                         android:src="@drawable/pizza" />
-
                     <ImageButton
                         android:id="@+id/ib_add_thmb_sandwitch"
                         android:layout_width="wrap_content"
@@ -92,7 +91,6 @@
                         android:alpha=".15"
                         android:contentDescription="sandwitch"
                         android:src="@drawable/sandwich" />
-
                     <ImageButton
                         android:id="@+id/ib_add_thmb_cake"
                         android:layout_width="wrap_content"
@@ -101,7 +99,6 @@
                         android:alpha=".15"
                         android:contentDescription="cake"
                         android:src="@drawable/cake" />
-
                     <ImageButton
                         android:id="@+id/ib_add_thmb_cookies"
                         android:layout_width="wrap_content"
@@ -110,7 +107,6 @@
                         android:alpha=".15"
                         android:contentDescription="cookies"
                         android:src="@drawable/cookies" />
-
                     <ImageButton
                         android:id="@+id/ib_add_thmb_fruits"
                         android:layout_width="wrap_content"
@@ -146,7 +142,20 @@
         android:layout_height="0dp"
         android:layout_weight="0.2"
         android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
 
+            <ImageButton
+                android:id="@+id/ib_add_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:contentDescription="@string/btn_back"
+                android:scaleType="centerInside"
+                android:src="@drawable/back_arrow_light" />
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -162,19 +171,6 @@
                 android:src="@drawable/add_icon" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
 
-            <ImageButton
-                android:id="@+id/ib_add_back"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:contentDescription="@string/btn_back"
-                android:scaleType="centerInside"
-                android:src="@drawable/back_arrow_light" />
-        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

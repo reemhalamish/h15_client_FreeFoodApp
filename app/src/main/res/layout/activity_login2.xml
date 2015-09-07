@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff282828"
@@ -6,33 +6,44 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="il.ac.huji.freefood.activities_one_class.LoginActivity">
+    tools:context="il.ac.huji.freefood.activities_one_class.LoginActivity"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/login2_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:padding="30dp"
-        android:text="Welcome!"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    <ImageView
-        android:id="@+id/login2_imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login2_textView"
-        android:layout_centerHorizontal="true"
-        android:background="#ff282828"
-        android:src="@drawable/pooh_in_snow" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.20">
+        <TextView
+            android:id="@+id/login2_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="30dp"
+            android:gravity="center_horizontal"
+            android:text="Welcome!"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+    </RelativeLayout>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7">
+            <ImageView
+                android:id="@+id/login2_imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:background="#ff282828"
+                android:src="@drawable/pooh_in_snow_new" />
+    </RelativeLayout>
+
+
 
     <TextView
         android:id="@+id/tv_login_undertext"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:padding="30dp"
-        android:text="please wait while loading your profile..." />
+        android:gravity="center_horizontal"
+        android:text="please wait while loading your profile..."
+        android:layout_weight="0.05"/>
     <!--android:layout_below="@+id/login2_imageView"-->
-</RelativeLayout>
+</LinearLayout>

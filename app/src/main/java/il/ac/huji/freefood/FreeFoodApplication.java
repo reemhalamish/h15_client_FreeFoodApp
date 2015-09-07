@@ -8,11 +8,13 @@ package il.ac.huji.freefood;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
@@ -22,9 +24,10 @@ import java.io.File;
 import java.util.Date;
 
 import il.ac.huji.freefood.data.Food;
+import il.ac.huji.freefood.data.LocationSuperviser;
 import il.ac.huji.freefood.data.SingletonFoodList;
 
-public class FreeFoodApp extends android.app.Application {
+public class FreeFoodApplication extends android.app.Application {
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
@@ -80,7 +83,7 @@ public class FreeFoodApp extends android.app.Application {
         //prepare the singleton
         Date lastUpdated;
         try {
-            prefs = PreferenceManager.getDefaultSharedPreferences(FreeFoodApp.this);
+            prefs = PreferenceManager.getDefaultSharedPreferences(FreeFoodApplication.this);
             lastUpdated = new Date(prefs.getLong("freefood.lastUpdated", 0));
             Log.d("last updated", "got from sharedPref" + lastUpdated);
         } catch (Exception e) {
@@ -88,7 +91,17 @@ public class FreeFoodApp extends android.app.Application {
             lastUpdated = null;
             Log.d("last updated", e.getMessage());
         }
-        SingletonFoodList.getInstance().init(FreeFoodApp.this, lastUpdated);
+        SingletonFoodList.getInstance().init(FreeFoodApplication.this, lastUpdated);
+
+
+        //location-related actions
+        ParseGeoPoint lastParseKnown = ParseInstallation.getCurrentInstallation().getParseGeoPoint(LocationCaptureService.USER_LOCATION_TAG);
+        if (lastParseKnown != null ) {
+            Location lastKnownLocation = LocationSuperviser.parseToLocation(lastParseKnown);
+            Log.d("app","sending location: " + lastKnownLocation);
+            LocationSuperviser.updateLocation(lastKnownLocation);
+        }
+        LocationSuperviser.startLocationServiceIfNeeded(this);
 
 //
 //        }}).start();

@@ -69,6 +69,9 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<Food> {
         Date createdAt = curItem.getCreatedAt();
         if (createdAt != null)
             txtOther.setText(formatter.format(createdAt));
+        else {
+            txtOther.setText("long ago");
+        }
         thumbnail.setImageResource(curItem.getThumbnail().toDrawableID());
 
         view.setTag(position);

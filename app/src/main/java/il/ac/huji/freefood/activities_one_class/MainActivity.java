@@ -1,5 +1,6 @@
 package il.ac.huji.freefood.activities_one_class;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,7 +13,7 @@ import il.ac.huji.freefood.R;
 import il.ac.huji.freefood.activity_choose_food.ChooseFoodActivity;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     final static int REQUEST_CODE = 1;
 
     @Override
@@ -61,9 +62,11 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            // TODO make the MainActivity extend ActionBarActivity instead
+//            // and here startActivityForResult(settingsActivity)
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import il.ac.huji.freefood.FreeFoodApp;
+import il.ac.huji.freefood.FreeFoodApplication;
 
 /**
  * Created by Ayala on 30/04/2015.
@@ -33,7 +33,7 @@ public class SingletonFoodList {
     private static final int REPLACE_WHOLE_LIST = 7;
     private static final int REMOVE_WHOLE_LIST = 8;
     private static SingletonFoodList instance;
-    private FreeFoodApp application;
+    private FreeFoodApplication application;
     private List<Food> clientFoodListItems;
     private List<Handler> listChangesHandlers;
     private Date lastUpdated;
@@ -165,7 +165,7 @@ public class SingletonFoodList {
         query.findInBackground(parseCallback);
     }
 
-    public void init(FreeFoodApp app, Date lastUpdatedFromApp) {
+    public void init(FreeFoodApplication app, Date lastUpdatedFromApp) {
         application = app;
         lastUpdated = getYesterday(); // old enough
         if (lastUpdatedFromApp != null && lastUpdatedFromApp.after(lastUpdated)) //d1.after(d2) == d1.isAfter(d2)
@@ -175,6 +175,10 @@ public class SingletonFoodList {
 
     public List<Food> getClientFoodListItems() {
         return clientFoodListItems;
+    }
+    public Food getCliendFoodAtIndex(int index) {
+        if (index < 0 || index > clientFoodListItems.size()) { return null; }
+        return clientFoodListItems.get(index);
     }
 
     public synchronized void removeItem(int position) {

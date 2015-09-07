@@ -16,9 +16,7 @@ import java.io.Serializable;
 @ParseClassName("Food")
 public class Food extends ParseObject implements Serializable {
 
-    public Food() {
-        setCreator();
-    }
+    public Food() {}
 
     @Deprecated
     public Food(Thumbnail picture, String title, String details) {
@@ -74,6 +72,7 @@ public class Food extends ParseObject implements Serializable {
         this.setDetails(details);
         this.setThumbnail(picture);
         this.setTitle(title);
+        this.setCreator();
         put("ui_ready", true);
     }
 

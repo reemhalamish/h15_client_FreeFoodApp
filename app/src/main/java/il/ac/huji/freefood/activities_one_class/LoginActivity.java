@@ -1,5 +1,6 @@
 package il.ac.huji.freefood.activities_one_class;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,9 +20,10 @@ import com.parse.ParseUser;
 import java.io.IOException;
 
 import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.data.LocationSuperviser;
 
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends Activity {
     private final static int TIME_IN_SCREEN_MS = 800;
     private final static String NO_INTERNET_DIALOG_TITLE = "No Internet Connectivity";
     private final static String NO_INTERNET_DIALOG_MSG = "We can't access the internet,\nCheck your internet connectivity and try again.\n\nFreeFood will close now";

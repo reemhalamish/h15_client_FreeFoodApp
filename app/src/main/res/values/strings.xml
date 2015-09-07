@@ -5,7 +5,7 @@
     <string name="ActivityAddFood_insideBuildingHint">Where in the building?</string>
     <string name="ActivityAddFood_description_hint">Which food?</string>
     <string name="ActivityAddFood_num_people_hint">For how many people?</string>
-    <string name="action_settings">Free food</string>
+    <string name="action_settings">Settings</string>
     <string name="SignUpActivity_EnterYourName">Please enter your name:</string>
     <string name="SignUpActivity_NameHint">e.g: Albert</string>
     <string name="SignUpActivity_Done">Done</string>

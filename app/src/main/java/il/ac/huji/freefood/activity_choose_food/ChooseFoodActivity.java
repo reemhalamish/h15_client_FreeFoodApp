@@ -1,7 +1,9 @@
 package il.ac.huji.freefood.activity_choose_food;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.activities_one_class.FoodDetailsActivity;
 import il.ac.huji.freefood.activities_one_class.NoFoodFoundActivity;
 import il.ac.huji.freefood.data.Food;
 import il.ac.huji.freefood.data.SingletonFoodList;
@@ -33,6 +36,8 @@ import il.ac.huji.freefood.data.SingletonFoodList;
  */
 public class ChooseFoodActivity extends Activity// implements LoaderManager.LoaderCallbacks<List<FoodListItem>> {
 {
+    public static final String INTENT_FROM_CHOOSEFOOD_TAG = "index_of_fooditem_in_singleton";
+
     public View.OnTouchListener dismissListener;
     protected ChooseFoodActivityAdapter aa;
     protected Handler listChangedHandler;
@@ -45,7 +50,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_food);
+        setContentView(R.layout.activity_choose_food);
         Log.d("no_food", "choose food called");
         lv_foodList = (ListView) findViewById(R.id.lv_FoodShowList);
         final Context context = this;
@@ -77,6 +82,11 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
         SingletonFoodList.getInstance().registerHandler(listChangedHandler);
 
 
+        //set the buttons
+        setButtonsListeners();
+    }
+
+    private void setButtonsListeners() {
         // set the refresh button
         refreshButton = (ImageButton) findViewById(R.id.ib_showfood_refresh);
         refreshButton.setOnClickListener(new View.OnClickListener() {
@@ -94,12 +104,21 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
         clearAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SingletonFoodList.getInstance().clearAndUnpinAllItems();
-                // it will automatically get inside this list via the handler
-                // TODO add an alert!!
+                //start a nice visualization
+                Animation tiltAnimation = AnimationUtils.loadAnimation(
+                        ChooseFoodActivity.this,
+                        R.anim.tilt_by_rotating_couple_times);
+                tiltAnimation.setRepeatCount(1);
+                clearAllButton.startAnimation(tiltAnimation);
 
-                // TODO add some visuality?
-                // i can add somthing like the garbage-can is tilting
+                // after animation, open the dialog
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        promptTheUserForDeleting(ChooseFoodActivity.this);
+                    }
+                }, tiltAnimation.computeDurationHint());
             }
         });
 
@@ -111,8 +130,6 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                 finish();
             }
         });
-
-
 
     }
 
@@ -146,8 +163,10 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     protected View.OnTouchListener createDismissListener() {
         final Context context = this;
         return new View.OnTouchListener() {
+            private final int CRITICAL_PADDING_FOR_OPEN_DETAILS_ACTIVITY = 10;
             private final float screen_width = getScreenWidth();
             private final float CRITICAL_PADDING = screen_width / 4.0f;
+
             private int padding = 0;
             private int initialx = 0;
             private int currentx = 0;
@@ -191,6 +210,12 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                     } else {
                         tv_dismissText.setTextColor(Color.WHITE);
                         tv_dismissText.setAlpha(0);
+
+                        if (Math.abs(padding) < CRITICAL_PADDING_FOR_OPEN_DETAILS_ACTIVITY) {
+                            Intent foodDetails = new Intent(ChooseFoodActivity.this, FoodDetailsActivity.class);
+                            foodDetails.putExtra(INTENT_FROM_CHOOSEFOOD_TAG, index_of_me);
+                            startActivity(foodDetails);
+                        }
                     }
                     padding = 0;
                     initialx = 0;
@@ -210,6 +235,35 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                 return true;
             }
         };
+    }
+    private void promptTheUserForDeleting(Context context) {
+        AlertDialog.OnClickListener confirmListener = new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        SingletonFoodList.getInstance().clearAndUnpinAllItems();
+                        // it will automatically get inside this list via the handler
+                        break;
+                }
+                dialogInterface.dismiss();
+            }
+        };
+        AlertDialog.OnCancelListener cancel_listener = new AlertDialog.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                dialogInterface.dismiss();
+            }
+        };
+        AlertDialog.Builder dlg = new AlertDialog.Builder(context);
+        dlg.setTitle("Sure to Dismiss All?");
+        dlg.setMessage("You were about to dismiss ALL THE FOOD IN THE LIST. Are you sure?");
+        dlg.setPositiveButton("yes", confirmListener);
+        dlg.setNegativeButton("NO", confirmListener);
+        dlg.setCancelable(true);
+        dlg.setOnCancelListener(cancel_listener);
+        dlg.create();
+        dlg.show();
     }
 
     @Override
