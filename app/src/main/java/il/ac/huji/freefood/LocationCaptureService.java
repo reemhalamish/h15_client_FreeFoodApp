@@ -3,6 +3,7 @@ package il.ac.huji.freefood;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -16,6 +17,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.parse.LocationCallback;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
@@ -23,7 +26,7 @@ import com.parse.ParseUser;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import il.ac.huji.freefood.data.Food;
+import il.ac.huji.freefood.activities_one_class.ErrorDialog;
 import il.ac.huji.freefood.data.FoodBuilder;
 import il.ac.huji.freefood.data.LocationSuperviser;
 
@@ -39,9 +42,10 @@ public class LocationCaptureService extends Service
     public static final String FOOD_ID_TAG = "food_id";
     public static final String USER_LOCATION_TAG = "last_known_location";
 
-    private static final int MIN_PRECISE_OKAY_IN_METERS = 50;
+    private static final int MIN_PRECISE_OKAY_IN_METERS = LocationSuperviser.MIN_PRECISE_TO_PUBLISH;
     private static final int MIN_PRECISE_GOOD_ENOUGH_FOR_IMMIDIATE_PUBLISH_IN_METERS = 15;
     private static final int TIME_UNTIL_RETREAT_SECONDS = 180; // beyond that time we use the location we got and that's it
+    private static final int TIME_UNTIL_PARSE_RETREAT_MILISECONDS = 30 * 1000; // beyond that time we use the location we got and that's it
 
     private final String LOG_TAG = "location";
     private int precise_cur_level = 999999;
@@ -54,7 +58,7 @@ public class LocationCaptureService extends Service
 //    private static final String LOCATION_KEY = "location_stored";
 //    private static final String LAST_UPDATED_TIME_STRING_KEY = "last_updated_at";
 //    private static final int REQUEST_RESOLVE_ERROR = 35;
-//    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 26;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 26;
     private Location mLastKnownLocation;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -75,7 +79,7 @@ public class LocationCaptureService extends Service
     public void onCreate() {
         super.onCreate();
         context = this;
-        Toast.makeText(this, "Starting service!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Capturing your location!", Toast.LENGTH_SHORT).show();
 
         startCapturingLocationTime = new Date().getTime();
         stopCapturingLocationTime = startCapturingLocationTime + TimeUnit.SECONDS.toMillis(TIME_UNTIL_RETREAT_SECONDS);
@@ -91,22 +95,23 @@ public class LocationCaptureService extends Service
     }
 
     public void onFindingLocation() {
-        ParseUser user = ParseUser.getCurrentUser();
         ParseGeoPoint parse_location = LocationSuperviser.location_to_ParseGeoPoint(curLocation);
+        int accuracy = (int) curLocation.getAccuracy();
+
+        ParseUser user = ParseUser.getCurrentUser();
         user.put(USER_LOCATION_TAG, parse_location); // for other uses
         user.saveEventually();
-        ParseInstallation.getCurrentInstallation().put(USER_LOCATION_TAG, parse_location);
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put(USER_LOCATION_TAG, parse_location);
+        installation.saveEventually();
 
         Log.d(LOG_TAG, "found sufficient location. stopping...");
-        FoodBuilder.getInstance().serviceFoundLocation(parse_location);
-        Toast.makeText(context, "GPS captured. food shared!\npress \"I'm hungry!\" to see", Toast.LENGTH_LONG).show();
+        FoodBuilder.getInstance().serviceFoundLocation(parse_location, accuracy);
         quitImmediately();
     }
 
     public void onTooLongLocationNotFound() {
-        // TODO check if accuracy is good enough, if so then publish as "not to be trusted" and tell the user to help - add some text
-
-        Toast.makeText(this, "couldn't find sufficient location.\nFood won't be shared. Try again!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "couldn't find sufficient location. Try connecting to a wifi or get out to the open air :)", Toast.LENGTH_LONG).show();
         quitImmediately();
     }
 
@@ -121,8 +126,47 @@ public class LocationCaptureService extends Service
             buildGoogleApiClient();
 
         } else {
-            Toast.makeText(context, "cant connect to google api client!", Toast.LENGTH_SHORT).show(); //TODO something better!
+            ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
+//            startParseLocation();
         }
+    }
+
+    private void startItOldWay() {
+        startService(new Intent(this, LocationServiceOldWay.class));
+    }
+
+    private void startParseLocation() {
+        if (true) {
+            LocationSuperviser.updateServiceState(false);
+            startItOldWay();
+            stopSelf();
+            return;
+        }
+        Log.d(LOG_TAG, "google play won't work. Using parse");
+        Toast.makeText(context, "location capturing will take a while...", Toast.LENGTH_LONG).show(); //TODO something better!
+        ParseGeoPoint.getCurrentLocationInBackground(TIME_UNTIL_PARSE_RETREAT_MILISECONDS, new LocationCallback() {
+            @Override
+            public void done(ParseGeoPoint location, ParseException e) {
+                if (e != null) {
+                    Log.e(LOG_TAG, "using parse to find the location failed: " + e.getMessage());
+                    stopSelf();
+                    return;
+                }
+                Log.d(LOG_TAG, "using parse to find the location SUCCEEDED! " + location);
+
+                // a slightly changed version of onFindingLocation();
+                ParseUser user = ParseUser.getCurrentUser();
+                user.put(USER_LOCATION_TAG, location); // for other uses
+                user.saveEventually();
+                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                installation.put(USER_LOCATION_TAG, location);
+                installation.saveEventually();
+
+                Log.d(LOG_TAG, "found sufficient location. stopping...");
+                FoodBuilder.getInstance().serviceFoundLocation(location, 100);
+                stopSelf();
+            }
+        });
     }
 
     /**
@@ -137,14 +181,19 @@ public class LocationCaptureService extends Service
                         "Google PlayServices is out of date. Please upgrade it.\nFood won't be shared",
                         Toast.LENGTH_LONG)
                         .show();
+                ErrorDialog.callErrorDialog(this, "Google PlayServices is out of date", "So you can't share any food until you will update it. meanwhile you can browse the food that other people shared!");
+//                startParseLocation();
 //
 //  TODO add this piece of code to resolve the user's problem by downloading the relevant PlayServices
-// GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+// GooglePlayServicesUtil.getErrorDialog(resultCode, getRunningActivitySomehow(),
 //                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Toast.makeText(context,
                         "This device is not supported.", Toast.LENGTH_LONG)
                         .show();
+//                startParseLocation();
+                ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
+
             }
             return false;
         }
@@ -190,10 +239,13 @@ public class LocationCaptureService extends Service
         Log.d(LOG_TAG, "new location arrived!");
         Log.d(LOG_TAG, "precise level: " + precise + ", current: " + precise_cur_level);
 
-//        if (FoodBuilder.getInstance().dontNeedLocationAnymore()) {
-//            quitImmediately();
-//        }
-//        there is no such a thing. This whole app is based on location...
+        if (FoodBuilder.getInstance().dontNeedLocationAnymore()) {
+            quitImmediately();
+        }
+//        if one day I will use the location service for other stuff, I will need to check that as well so the checks will get to the locationSuperviser
+//          for now there is no such a thing. Even then this whole app is based on location...
+
+
         if (location != null) {
             LocationSuperviser.updateLocation(curLocation);
         }

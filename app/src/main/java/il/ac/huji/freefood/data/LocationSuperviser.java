@@ -17,6 +17,8 @@ import il.ac.huji.freefood.LocationCaptureService;
  */
 public class LocationSuperviser { // TODO make it Singleton
     private static final float FACTOR_TO_ACCEPT_BAD_ACCURACY = 10f;
+    public static final int MIN_PRECISE_TO_PUBLISH = 50;
+    private static final double FOOD_CLOSE_CRITERIA_IN_METERS = 10;
     private static boolean serviceIsWorking = false;
     private static Location lastKnownLocation = null;
     public static boolean locationServiceIsActive() {
@@ -67,11 +69,13 @@ public class LocationSuperviser { // TODO make it Singleton
         }
     }
 
-    public static boolean imWithin50Meters(ParseGeoPoint foodLocation) {
-        return calculateDistanceFromMyself(foodLocation) < 50.0;
+    public static boolean imWithinCloseArea(ParseGeoPoint foodLocation) {
+        return calculateDistanceFromMyself(foodLocation) < FOOD_CLOSE_CRITERIA_IN_METERS;
     }
 
     public static double calculateDistanceFromMyself(ParseGeoPoint foodLocation) {
+        if (lastKnownLocation == null)
+            return Double.POSITIVE_INFINITY;
         double lat1 = lastKnownLocation.getLatitude();
         double lng1 = lastKnownLocation.getLongitude();
         double lat2 = foodLocation.getLatitude();

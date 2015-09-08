@@ -26,7 +26,7 @@
         android:layout_below="@+id/login2_textView"
         android:layout_centerHorizontal="true"
         android:background="#ff282828"
-        android:src="@drawable/pooh_in_snow" />
+        android:src="@drawable/pooh_in_snow_new" />
 
     <TextView
         android:id="@+id/tv_login_undertext"

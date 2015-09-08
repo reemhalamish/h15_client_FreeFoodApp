@@ -1,6 +1,7 @@
 package il.ac.huji.freefood.activity_choose_food;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import il.ac.huji.freefood.R;
+import il.ac.huji.freefood.activities_one_class.FoodDetailsActivity;
 import il.ac.huji.freefood.data.Food;
 
 /**
@@ -22,19 +24,22 @@ import il.ac.huji.freefood.data.Food;
  * adapter for any row in the foodListItems
  */
 public class ChooseFoodActivityAdapter extends ArrayAdapter<Food> {
+
     protected int _resurce;
     protected List<Food> _objects;
     protected int _itemId;
     protected Context _context;
     protected View.OnTouchListener _dismissListener;
     protected Format formatter;
+    protected View.OnClickListener _clickListener;
 
     public ChooseFoodActivityAdapter(
                         Context context,
                         int resource,
                         int itemId,
                         List<Food> objects,
-                        View.OnTouchListener listener) {
+                        View.OnTouchListener listener,
+                        View.OnClickListener clickListener) {
         super(context, resource, itemId, objects);
         this._context = context;
         this._resurce = resource;
@@ -44,6 +49,8 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<Food> {
 
 //        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         formatter = new SimpleDateFormat("EEEE HH:mm", Locale.getDefault());
+
+        _clickListener = clickListener;
 
     }
     @Override
@@ -57,6 +64,7 @@ public class ChooseFoodActivityAdapter extends ArrayAdapter<Food> {
 
         if (_dismissListener != null) {
             view.setOnTouchListener(_dismissListener);
+            view.setOnClickListener(_clickListener);
 
         }
 

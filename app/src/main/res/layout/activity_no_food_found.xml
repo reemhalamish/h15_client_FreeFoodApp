@@ -13,8 +13,10 @@
             android:id="@+id/ib_no_food_addfood_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:src="@drawable/no_food_found" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/no_food_found_white"
+            android:background="#ff0f0f0f"
+            />
     </RelativeLayout>
 
     <LinearLayout

@@ -101,7 +101,7 @@ public class FreeFoodApplication extends android.app.Application {
             Log.d("app","sending location: " + lastKnownLocation);
             LocationSuperviser.updateLocation(lastKnownLocation);
         }
-        LocationSuperviser.startLocationServiceIfNeeded(this);
+//        LocationSuperviser.startLocationServiceIfNeeded(this);
 
 //
 //        }}).start();

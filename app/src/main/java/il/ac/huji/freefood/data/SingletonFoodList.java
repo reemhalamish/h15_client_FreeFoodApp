@@ -3,11 +3,15 @@ package il.ac.huji.freefood.data;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
@@ -21,7 +25,9 @@ import il.ac.huji.freefood.FreeFoodApplication;
 
 /**
  * Created by Ayala on 30/04/2015.
- * Here to make calling the foodlist easier
+ * Upgraded by Re'em from 05/05/2015.
+ *
+ * This Singleton is in charge of communicating with parse about the Food class
  */
 public class SingletonFoodList {
     private static final int ADD_ONE_ITEM_FIRST = 1;
@@ -270,6 +276,7 @@ public class SingletonFoodList {
 
     public void addToList(final Food item) {
         messWithList(ADD_ONE_ITEM_FIRST, item, null, 0);
+        Toast.makeText(application, "item created! press \"I'm hungry\" to see :)", Toast.LENGTH_LONG).show();
         item.saveEventually(new SaveCallback() {
             /*
                 the thing is, It can be downloaded from parse now. so next time of update it will get
@@ -281,7 +288,13 @@ public class SingletonFoodList {
              */
             @Override
             public void done(ParseException e) {
+                if (e != null) {
+                    Log.e("parse_ds", e.getMessage());
+                    return;
+                }
+                Toast.makeText(application, "food was shared successfully on the internet! :)", Toast.LENGTH_LONG).show();
                 getOnlyNewElementsFromParse(item);
+                sendPushNotifications(item);
             }
         });
     }
@@ -311,6 +324,24 @@ public class SingletonFoodList {
         int daysToDecrement = -1;
         cal.add(Calendar.DATE, daysToDecrement);
         return cal.getTime(); // again get back date object
+    }
+
+    private void sendPushNotifications(Food newbie) {
+        ParseInstallation myInstall = ParseInstallation.getCurrentInstallation();
+        ParseQuery pushQuery = ParseInstallation.getQuery();
+        ParseGeoPoint foodLocation = newbie.getLocation();
+        pushQuery.whereWithinKilometers("last_known_location", foodLocation, 50.0);
+        pushQuery.whereNotEqualTo("id", myInstall.getInstallationId()); // exclude myself from notifications
+
+        // Send push notification to query
+        ParsePush push = new ParsePush();
+
+        // Create time interval
+        long threeHoursInterval = 60*60*3; // intervals are in seconds
+        push.setExpirationTimeInterval(threeHoursInterval); // after three hours parse won't try to send more notifications
+        push.setQuery(pushQuery);
+        push.setMessage("New food is in your area!");
+        push.sendInBackground();
     }
 }
 

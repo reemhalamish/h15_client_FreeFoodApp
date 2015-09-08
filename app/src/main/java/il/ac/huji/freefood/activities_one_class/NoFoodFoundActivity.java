@@ -9,7 +9,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import il.ac.huji.freefood.FunnyStringsToRefreshButton;
 import il.ac.huji.freefood.R;
 import il.ac.huji.freefood.activity_choose_food.ChooseFoodActivity;
 import il.ac.huji.freefood.data.SingletonFoodList;
@@ -41,8 +43,16 @@ public class NoFoodFoundActivity extends Activity {
         // set the "refresh" button on the screen
         ImageButton check_again_ib = (ImageButton) findViewById(R.id.ib_no_food_checkagain_button);
         check_again_ib.setOnClickListener(new View.OnClickListener() {
+            private int pressedTimes = 0;
+
             @Override
             public void onClick(View view) {
+                String funny = FunnyStringsToRefreshButton.getWord(pressedTimes);
+                if (funny != null) { // i.e. not pressed so much times that there are no more funny words
+                    Toast.makeText(NoFoodFoundActivity.this, funny, Toast.LENGTH_SHORT).show();
+                    pressedTimes += 1;
+                }
+
                 SingletonFoodList.getInstance().getOnlyNewElementsFromParse();
             }
         });

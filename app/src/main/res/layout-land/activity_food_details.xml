@@ -89,7 +89,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.75"
             >
             <Button
                 android:layout_width="match_parent"
@@ -99,18 +99,18 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.25">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="0.25">-->
 
-            <ImageButton
-                android:id="@+id/ib_details_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/content_des_refresh_list_button"
-                android:scaleType="centerInside"
-                android:src="@drawable/refresh_icon" />
-        </RelativeLayout>
+            <!--<ImageButton-->
+                <!--android:id="@+id/ib_details_refresh"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:contentDescription="@string/content_des_refresh_list_button"-->
+                <!--android:scaleType="centerInside"-->
+                <!--android:src="@drawable/refresh_icon" />-->
+        <!--</RelativeLayout>-->
     </LinearLayout>
 </LinearLayout>

@@ -62,8 +62,12 @@ public class Food extends ParseObject implements Serializable {
     public ParseGeoPoint getLocation() {
         return getParseGeoPoint("location");
     }
+    public int getAccuracy() {
+        return getInt("accuracy");
+    }
 
-    public void setLocation(ParseGeoPoint location) {
+    public void setLocation(ParseGeoPoint location, int accuracy) {
+        put("accuracy", accuracy);
         put("location", location);
         put("location_ready", true);
     }

@@ -20,9 +20,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import il.ac.huji.freefood.FunnyStringsToRefreshButton;
 import il.ac.huji.freefood.R;
 import il.ac.huji.freefood.activities_one_class.FoodDetailsActivity;
 import il.ac.huji.freefood.activities_one_class.NoFoodFoundActivity;
@@ -38,7 +40,9 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
 {
     public static final String INTENT_FROM_CHOOSEFOOD_TAG = "index_of_fooditem_in_singleton";
 
-    public View.OnTouchListener dismissListener;
+
+    protected View.OnTouchListener dismissListener;
+    protected View.OnClickListener openDetailsListener;
     protected ChooseFoodActivityAdapter aa;
     protected Handler listChangedHandler;
     protected ImageButton refreshButton;
@@ -59,9 +63,12 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
         // set the touch-listener for every item in the list
         dismissListener = createDismissListener();
 
+        // set the click-listener
+        openDetailsListener = createOpeningListener();
+
         // set the adapter
         listFromSingleton = SingletonFoodList.getInstance().getClientFoodListItems();
-        aa = new ChooseFoodActivityAdapter(context, R.layout.choose_food_one_row, R.id.choose_food_picture, listFromSingleton, dismissListener);
+        aa = new ChooseFoodActivityAdapter(context, R.layout.choose_food_one_row, R.id.choose_food_picture, listFromSingleton, dismissListener, openDetailsListener);
         lv_foodList.setAdapter(aa);
 
         // set the handler
@@ -90,10 +97,17 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
         // set the refresh button
         refreshButton = (ImageButton) findViewById(R.id.ib_showfood_refresh);
         refreshButton.setOnClickListener(new View.OnClickListener() {
+            private int pressedTimes = 0;
             @Override
             public void onClick(View view) {
+                String funny = FunnyStringsToRefreshButton.getWord(pressedTimes);
+                if (funny != null) { // i.e. not pressed so much times that there are no more funny words
+                    Toast.makeText(ChooseFoodActivity.this, funny, Toast.LENGTH_SHORT).show();
+                    pressedTimes += 1;
+                }
                 SingletonFoodList.getInstance().getOnlyNewElementsFromParse();
                 // it will automatically get inside this list via the handler
+
                 // TODO add some graphic of work?
                 // i can add them at the layer of the button. radio-waves-inside-out style :)
             }
@@ -163,13 +177,19 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     protected View.OnTouchListener createDismissListener() {
         final Context context = this;
         return new View.OnTouchListener() {
+            public static final int CRITICAL_MOVE_FOR_CLICK = 3;
+            private boolean shouldClick = false;
             private final int CRITICAL_PADDING_FOR_OPEN_DETAILS_ACTIVITY = 10;
             private final float screen_width = getScreenWidth();
             private final float CRITICAL_PADDING = screen_width / 4.0f;
 
-            private int padding = 0;
+            private int paddingx = 0;
             private int initialx = 0;
             private int currentx = 0;
+            private int paddingy = 0;
+            private int initialy = 0;
+            private int currenty = 0;
+
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -180,18 +200,27 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                 final TextView tv_dismissText = (TextView) v.findViewById(R.id.tv_choose_food_dismiss);
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    padding = 0;
+                    paddingx = 0;
                     initialx = (int) event.getX();
                     currentx = (int) event.getX();
+                    paddingy = 0;
+                    initialy = (int) event.getY();
+                    currenty = (int) event.getY();
                     //viewHolder = ((ViewHolder) v.getTag());
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     currentx = (int) event.getX();
-                    padding = currentx - initialx;
+                    paddingx = currentx - initialx;
+                    currenty = (int) event.getY();
+                    paddingy = currenty - initialy;
+
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    if (Math.abs(padding) >= CRITICAL_PADDING) {
+                    if (Math.abs(paddingx) + Math.abs(paddingy) < CRITICAL_MOVE_FOR_CLICK && event.getAction() == MotionEvent.ACTION_UP) { // didn't move at all
+                        Log.d("click", "shouldclick summoned");
+                        v.performClick();
+                    } else if (Math.abs(paddingx) >= CRITICAL_PADDING) {
                         // create fade-out animation and call delete() at the end
                         Animation shrinkAnimation = AnimationUtils.loadAnimation(context, R.anim.shrink_to_middle);
                         shrinkAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -211,21 +240,24 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                         tv_dismissText.setTextColor(Color.WHITE);
                         tv_dismissText.setAlpha(0);
 
-                        if (Math.abs(padding) < CRITICAL_PADDING_FOR_OPEN_DETAILS_ACTIVITY) {
-                            Intent foodDetails = new Intent(ChooseFoodActivity.this, FoodDetailsActivity.class);
-                            foodDetails.putExtra(INTENT_FROM_CHOOSEFOOD_TAG, index_of_me);
-                            startActivity(foodDetails);
-                        }
+//                        if (Math.abs(padding) < CRITICAL_PADDING_FOR_OPEN_DETAILS_ACTIVITY) {
+//                            Intent foodDetails = new Intent(ChooseFoodActivity.this, FoodDetailsActivity.class);
+//                            foodDetails.putExtra(INTENT_FROM_CHOOSEFOOD_TAG, index_of_me);
+//                            startActivity(foodDetails);
+//                        }
                     }
-                    padding = 0;
+                    paddingx = 0;
                     initialx = 0;
                     currentx = 0;
+                    paddingy = 0;
+                    initialy = 0;
+                    currenty = 0;
                 }
 
 
-                if (padding != 0) {
-                    tv_dismissText.setAlpha(Math.min(Math.abs(4.0f * padding) / screen_width, 1.0f));
-                    if (Math.abs(padding) >= CRITICAL_PADDING) {
+                if (paddingx != 0) {
+                    tv_dismissText.setAlpha(Math.min(Math.abs(4.0f * paddingx) / screen_width, 1.0f));
+                    if (Math.abs(paddingx) >= CRITICAL_PADDING) {
                         tv_dismissText.setTextColor(Color.RED);
                     } else {
                         tv_dismissText.setTextColor(Color.WHITE);
@@ -233,6 +265,17 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
 
                 }
                 return true;
+            }
+        };
+    }
+
+    protected View.OnClickListener createOpeningListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent foodDetails = new Intent(ChooseFoodActivity.this, FoodDetailsActivity.class);
+                foodDetails.putExtra(INTENT_FROM_CHOOSEFOOD_TAG, (int) view.getTag());
+                startActivity(foodDetails);
             }
         };
     }

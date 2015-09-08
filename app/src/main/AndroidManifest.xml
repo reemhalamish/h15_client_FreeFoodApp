@@ -13,8 +13,8 @@
     <permission
         android:name="il.ac.huji.freefood.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="il.ac.huji.freefood.permission.C2D_MESSAGE" />
 
+    <uses-permission android:name="il.ac.huji.freefood.permission.C2D_MESSAGE" />
 
     <application
         android:name=".FreeFoodApplication"
@@ -25,21 +25,25 @@
 
         <activity android:name=".activities_one_class.MainActivity" />
         <activity android:name=".activities_one_class.NoFoodFoundActivity" />
+        <activity android:name=".activities_one_class.ErrorDialog" />
         <activity android:name=".activity_choose_food.ChooseFoodActivity" />
         <activity android:name=".activities_one_class.FoodDetailsActivity" />
         <activity android:name=".activities_one_class.AddFoodActivity" />
         <activity android:name=".activities_one_class.SignUpActivity" />
-        <activity android:name=".activities_one_class.LoginActivity">
+        <activity android:name=".activities_one_class.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service android:name="com.parse.PushService" />
         <service android:name=".LocationCaptureService" />
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -47,27 +51,43 @@
                 <category android:name="il.ac.huji.freefood" />
             </intent-filter>
         </receiver>
-
         <receiver
-            android:name="il.ac.huji.freefood.PushNotificationsReceiver"
-            android:exported="false">
+            android:name=".PushNotificationsReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
-
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.OPEN" />
                 <action android:name="com.parse.push.intent.DELETE" />
             </intent-filter>
         </receiver>
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAAMldpW6j6wFRd07Li1lX0tVgtNeFGc_g"/>
-
+        <!--<meta-data-->
+            <!--android:name="com.google.android.gms.version"-->
+            <!--android:value="@integer/google_play_services_version" />-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAAMldpW6j6wFRd07Li1lX0tVgtNeFGc_g" />
         <meta-data
             android:name="com.parse.push.notification_icon"
             android:resource="@drawable/pooh_icon" />
 
-        <!--TODO once it was android:resource="@drawable/ic_launcher" />-->
+        <!-- TODO once it was android:resource="@drawable/ic_launcher" /> -->
+
+        <service
+            android:name=".LocationServiceOldWay"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+
+
+        <!--<uses-library android:name="com.google.android.location"-->
+            <!--android:required="true"/>-->
+        <!--<uses-library android:name="com.google.android.maps"-->
+            <!--android:required="false"/>-->
 
     </application>
+
 </manifest>
