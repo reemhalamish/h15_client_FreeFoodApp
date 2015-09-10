@@ -8,7 +8,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -43,7 +42,7 @@ public class LocationCaptureService extends Service
     public static final String USER_LOCATION_TAG = "last_known_location";
 
     private static final int MIN_PRECISE_OKAY_IN_METERS = LocationSuperviser.MIN_PRECISE_TO_PUBLISH;
-    private static final int MIN_PRECISE_GOOD_ENOUGH_FOR_IMMIDIATE_PUBLISH_IN_METERS = 15;
+    private static final int MIN_PRECISE_GOOD_ENOUGH_FOR_IMMIDIATE_PUBLISH_IN_METERS = 20;
     private static final int TIME_UNTIL_RETREAT_SECONDS = 180; // beyond that time we use the location we got and that's it
     private static final int TIME_UNTIL_PARSE_RETREAT_MILISECONDS = 30 * 1000; // beyond that time we use the location we got and that's it
 
@@ -71,7 +70,7 @@ public class LocationCaptureService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LocationSuperviser.updateServiceState(true); // need to tell him that the service is working
-        Log.d(LOG_TAG, "service is starting");
+//        Log.d(LOG_TAG, "service is starting");
         return START_STICKY;
     }
 
@@ -79,7 +78,7 @@ public class LocationCaptureService extends Service
     public void onCreate() {
         super.onCreate();
         context = this;
-        Toast.makeText(this, "Capturing your location!", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Capturing your location!", Toast.LENGTH_SHORT).show();
 
         startCapturingLocationTime = new Date().getTime();
         stopCapturingLocationTime = startCapturingLocationTime + TimeUnit.SECONDS.toMillis(TIME_UNTIL_RETREAT_SECONDS);
@@ -98,16 +97,20 @@ public class LocationCaptureService extends Service
         ParseGeoPoint parse_location = LocationSuperviser.location_to_ParseGeoPoint(curLocation);
         int accuracy = (int) curLocation.getAccuracy();
 
+        updateParse(parse_location, accuracy);
+
+//        Log.d(LOG_TAG, "found sufficient location. stopping...");
+        FoodBuilder.getInstance().serviceFoundLocation(parse_location, accuracy);
+        quitImmediately();
+    }
+
+    private void updateParse(ParseGeoPoint parse_location, int accuracy) {
         ParseUser user = ParseUser.getCurrentUser();
         user.put(USER_LOCATION_TAG, parse_location); // for other uses
         user.saveEventually();
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
         installation.put(USER_LOCATION_TAG, parse_location);
         installation.saveEventually();
-
-        Log.d(LOG_TAG, "found sufficient location. stopping...");
-        FoodBuilder.getInstance().serviceFoundLocation(parse_location, accuracy);
-        quitImmediately();
     }
 
     public void onTooLongLocationNotFound() {
@@ -142,17 +145,17 @@ public class LocationCaptureService extends Service
             stopSelf();
             return;
         }
-        Log.d(LOG_TAG, "google play won't work. Using parse");
+//        Log.d(LOG_TAG, "google play won't work. Using parse");
         Toast.makeText(context, "location capturing will take a while...", Toast.LENGTH_LONG).show(); //TODO something better!
         ParseGeoPoint.getCurrentLocationInBackground(TIME_UNTIL_PARSE_RETREAT_MILISECONDS, new LocationCallback() {
             @Override
             public void done(ParseGeoPoint location, ParseException e) {
                 if (e != null) {
-                    Log.e(LOG_TAG, "using parse to find the location failed: " + e.getMessage());
+//                    Log.e(LOG_TAG, "using parse to find the location failed: " + e.getMessage());
                     stopSelf();
                     return;
                 }
-                Log.d(LOG_TAG, "using parse to find the location SUCCEEDED! " + location);
+//                Log.d(LOG_TAG, "using parse to find the location SUCCEEDED! " + location);
 
                 // a slightly changed version of onFindingLocation();
                 ParseUser user = ParseUser.getCurrentUser();
@@ -162,7 +165,7 @@ public class LocationCaptureService extends Service
                 installation.put(USER_LOCATION_TAG, location);
                 installation.saveEventually();
 
-                Log.d(LOG_TAG, "found sufficient location. stopping...");
+//                Log.d(LOG_TAG, "found sufficient location. stopping...");
                 FoodBuilder.getInstance().serviceFoundLocation(location, 100);
                 stopSelf();
             }
@@ -218,7 +221,7 @@ public class LocationCaptureService extends Service
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d(LOG_TAG, "connected to google api");
+//        Log.d(LOG_TAG, "connected to google api");
         mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mRequestingLocationUpdates) {
@@ -227,7 +230,7 @@ public class LocationCaptureService extends Service
     }
 
     protected void startLocationUpdates() {
-        Log.d(LOG_TAG, "asking for location updates");
+//        Log.d(LOG_TAG, "asking for location updates");
         createLocationRequest();
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
@@ -236,8 +239,8 @@ public class LocationCaptureService extends Service
     public void onLocationChanged(Location location) {
         float precise = location.getAccuracy();
 
-        Log.d(LOG_TAG, "new location arrived!");
-        Log.d(LOG_TAG, "precise level: " + precise + ", current: " + precise_cur_level);
+//        Log.d(LOG_TAG, "new location arrived!");
+//        Log.d(LOG_TAG, "precise level: " + precise + ", current: " + precise_cur_level);
 
         if (FoodBuilder.getInstance().dontNeedLocationAnymore()) {
             quitImmediately();
@@ -253,10 +256,14 @@ public class LocationCaptureService extends Service
 
             this.curLocation = location;
             precise_cur_level = (int) precise;
-            if (precise_cur_level < MIN_PRECISE_GOOD_ENOUGH_FOR_IMMIDIATE_PUBLISH_IN_METERS) {
+            if (precise_cur_level <= MIN_PRECISE_GOOD_ENOUGH_FOR_IMMIDIATE_PUBLISH_IN_METERS) {
                 onFindingLocation();
             }
         } else { // not having better precision over time anymore, time to decide!
+            // first update parse
+            ParseGeoPoint parse_location = LocationSuperviser.location_to_ParseGeoPoint(location);
+            int accuracy = (int) curLocation.getAccuracy();
+            updateParse(parse_location, accuracy);
 
             if (precise_cur_level < MIN_PRECISE_OKAY_IN_METERS) {
                 onFindingLocation();
@@ -268,7 +275,7 @@ public class LocationCaptureService extends Service
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.e("gps", "connection to google api failed!");
+//        Log.e("gps", "connection to google api failed!");
         return;
 
 //        // TODO one day, add this (this is a resolving error code)
@@ -295,7 +302,7 @@ public class LocationCaptureService extends Service
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d("gps", "connection to google api suspended. trying again...");
+//        Log.d("gps", "connection to google api suspended. trying again...");
         mGoogleApiClient.connect();
     }
 
@@ -305,7 +312,7 @@ public class LocationCaptureService extends Service
     }
 
     private void quitImmediately() {
-        Log.d(LOG_TAG, "quitting... " + this);
+//        Log.d(LOG_TAG, "quitting... " + this);
         LocationSuperviser.updateServiceState(false); // need to tell him that the service isn't working anymore
         stopLocationUpdates();
         stopSelf();

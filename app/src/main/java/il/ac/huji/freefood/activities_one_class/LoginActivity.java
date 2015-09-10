@@ -34,9 +34,9 @@ public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Log.d(TAG, "connection test1 " + test1());
-//        Log.d(TAG, "connection test2 " + test2());
-//        Log.d(TAG, "connection test3 " + test3());
+//        // Log.d(TAG, "connection test1 " + test1());
+//        // Log.d(TAG, "connection test2 " + test2());
+//        // Log.d(TAG, "connection test3 " + test3());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         try {
@@ -88,10 +88,10 @@ public class LoginActivity extends Activity {
 
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("internet", "IO " + e.getMessage());
+            // Log.e("internet", "IO " + e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log.e("internet", "Interrupt " + e.getMessage());
+            // Log.e("internet", "Interrupt " + e.getMessage());
         }
 
         return false;
@@ -129,11 +129,11 @@ public class LoginActivity extends Activity {
             if (reachable) {
                 return reachable;
             } else {
-                Log.d(TAG, "No network available!");
+                // Log.d(TAG, "No network available!");
             }
         } catch (Exception e) {
 
-            Log.e(TAG, "Error checking internet connection", e);
+            // Log.e(TAG, "Error checking internet connection", e);
         }
         return false;
     }
@@ -147,10 +147,10 @@ public class LoginActivity extends Activity {
 
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("internet", "IO " + e.getMessage());
+            // Log.e("internet", "IO " + e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log.e("internet", "Interrupt " + e.getMessage());
+            // Log.e("internet", "Interrupt " + e.getMessage());
         }
         return false;
     }

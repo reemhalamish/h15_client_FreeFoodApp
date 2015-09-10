@@ -2,7 +2,6 @@ package il.ac.huji.freefood.data;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.DeleteCallback;
@@ -68,11 +67,11 @@ public class SingletonFoodList {
             @Override
             public void done(List<Food> foodListItems, ParseException e) {
                 if (e != null) {
-                    Log.e("parse ds", "no food is in local datastore. trying to reach the internet");
-                    Log.e("parse ds", e.getMessage());
+//                    Log.e("parse ds", "no food is in local datastore. trying to reach the internet");
+//                    Log.e("parse ds", e.getMessage());
                     getListFromParse();
                 } else {
-                    Log.d("parse ds", "found food from local ds - " + foodListItems.size() + " items");
+//                    Log.d("parse ds", "found food from local ds - " + foodListItems.size() + " items");
 
                     ParseObject.fetchAllInBackground(foodListItems);
                     messWithList(REPLACE_WHOLE_LIST, null, foodListItems, 0);
@@ -100,14 +99,14 @@ public class SingletonFoodList {
             @Override
             public void done(List<Food> foodListItems, ParseException e) {
                 if (e != null) {
-                    Log.e("parse ds", "no food from parse.com");
-                    Log.e("parse ds", e.getMessage());
+//                    Log.e("parse ds", "no food from parse.com");
+//                    Log.e("parse ds", e.getMessage());
 
                     // so let's create the list.
                     // an empty list suggests there is no food, while null means we need to sync
                     clientFoodListItems = new ArrayList<>();
                 } else {
-                    Log.d("parse ds", "got some food from parse.com with " + foodListItems.size() + " items");
+//                    Log.d("parse ds", "got some food from parse.com with " + foodListItems.size() + " items");
                     ParseObject.pinAllInBackground(foodListItems);
                     messWithList(REPLACE_WHOLE_LIST, null, foodListItems, 0);
 
@@ -148,10 +147,10 @@ public class SingletonFoodList {
             @Override
             public void done(List<Food> foodListItems, ParseException e) {
                 if (e != null) {
-                    Log.e("parse ds", "no food from try to update in parse.com");
-                    Log.e("parse ds", e.getMessage());
+//                    Log.e("parse ds", "no food from try to update in parse.com");
+//                    Log.e("parse ds", e.getMessage());
                 } else {
-                    Log.d("parse ds", "updating, " + foodListItems.size() + " items");
+//                    Log.d("parse ds", "updating, " + foodListItems.size() + " items");
                     if (toDelete != null)
                         messWithList(REMOVE_ITEM_BY_REFERENCE, toDelete, null, 0);
 
@@ -271,7 +270,7 @@ public class SingletonFoodList {
         }
         // there WAS a change. notify the listeners!
         notifyHandlersNewList();
-        Log.d("mess_with_list", "" + action + ": was completed successfully!");
+//        Log.d("mess_with_list", "" + action + ": was completed successfully!");
     }
 
     public void addToList(final Food item) {
@@ -289,7 +288,7 @@ public class SingletonFoodList {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e("parse_ds", e.getMessage());
+//                    Log.e("parse_ds", e.getMessage());
                     return;
                 }
                 Toast.makeText(application, "food was shared successfully on the internet! :)", Toast.LENGTH_LONG).show();
@@ -305,7 +304,7 @@ public class SingletonFoodList {
         ParseObject.unpinAllInBackground(allElements, new DeleteCallback() {
             @Override
             public void done(ParseException e) {
-                Log.d("unpin", "removed all items!");
+//                Log.d("unpin", "removed all items!");
             }
         });
         messWithList(REMOVE_WHOLE_LIST, null, null, 0);
@@ -328,10 +327,11 @@ public class SingletonFoodList {
 
     private void sendPushNotifications(Food newbie) {
         ParseInstallation myInstall = ParseInstallation.getCurrentInstallation();
-        ParseQuery pushQuery = ParseInstallation.getQuery();
+        ParseQuery<ParseInstallation> pushQuery = ParseInstallation.getQuery();
         ParseGeoPoint foodLocation = newbie.getLocation();
         pushQuery.whereWithinKilometers("last_known_location", foodLocation, 50.0);
-        pushQuery.whereNotEqualTo("id", myInstall.getInstallationId()); // exclude myself from notifications
+        pushQuery.whereNotEqualTo("installationId", myInstall.getInstallationId()); // exclude myself from notifications
+
 
         // Send push notification to query
         ParsePush push = new ParsePush();
@@ -342,32 +342,20 @@ public class SingletonFoodList {
         push.setQuery(pushQuery);
         push.setMessage("New food is in your area!");
         push.sendInBackground();
+
     }
 }
 
 /*
-TODO:
+ONE DAY:
 * implement such a way that when new food is getting, it is valid for an hour and then gets deleted from parse
 * option to report food as "over"?
-* get the food from gps?
-* update the entire AddFoodActivity to be normal
-* save locally the last-updated time ( == when the user pressed "refresh" last time? when the last query came from parse?)
 * add facebook connection
 * each facebook client will hae their own channel, each of your facebook friends is subscribed to your channel,
     when you publish new food, it gets to parse to let everyone see, plus to your facebook friends via your channel
     the user will be able to decide where to publish - everyone, fb friends only, or both of lists
-* add activity on pressing the food with: description, how many people viewed it by now, creator, aaaaaand that's it I guess
-    (maybe facebook profile if he's in your friends)
-
+* option to see who shared the food and follow him\her
 * add points for every user for his shares? so that users that share a lot will receive funny pictures or something?
-
-
-* what would I do with the GPS??? the simple solution is to add gps tracking and wait with the send until it's tracked or time passed
-* also for signing in every time, I need to track down the user (at least to the city level) and show him\her only suitable food.
-
-* parse would have to know to send notifications only in  certain delta for the user's lon\lat
-
-
 
 
  */

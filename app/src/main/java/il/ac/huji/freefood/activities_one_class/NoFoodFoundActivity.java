@@ -6,15 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import il.ac.huji.freefood.FunnyStringsToRefreshButton;
 import il.ac.huji.freefood.R;
 import il.ac.huji.freefood.activity_choose_food.ChooseFoodActivity;
 import il.ac.huji.freefood.data.SingletonFoodList;
+import il.ac.huji.freefood.funnyStringsToRefreshButton;
 
 /**
  * Created by reem on 8/5/15.
@@ -47,7 +46,7 @@ public class NoFoodFoundActivity extends Activity {
 
             @Override
             public void onClick(View view) {
-                String funny = FunnyStringsToRefreshButton.getWord(pressedTimes);
+                String funny = funnyStringsToRefreshButton.getWord(pressedTimes);
                 if (funny != null) { // i.e. not pressed so much times that there are no more funny words
                     Toast.makeText(NoFoodFoundActivity.this, funny, Toast.LENGTH_SHORT).show();
                     pressedTimes += 1;
@@ -79,7 +78,7 @@ public class NoFoodFoundActivity extends Activity {
                             Intent goToChooseFood = new Intent(NoFoodFoundActivity.this, ChooseFoodActivity.class);
                             startActivity(goToChooseFood);
                             finish(); // to get it out of the activities stack
-                            Log.d("no food", "msg got!");
+//                            Log.d("no food", "msg got!");
                         }
                     }
                 });
@@ -92,7 +91,7 @@ public class NoFoodFoundActivity extends Activity {
     protected void onDestroy() {
         SingletonFoodList.getInstance().removeHandler(listChangedHandler);
         listChangedHandler = null;
-        Log.d("no food", "destroyed");
+//        Log.d("no food", "destroyed");
         super.onDestroy();
     }
 }

@@ -1,5 +1,6 @@
 package il.ac.huji.freefood.activity_choose_food;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,7 +11,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,12 +24,12 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import il.ac.huji.freefood.FunnyStringsToRefreshButton;
 import il.ac.huji.freefood.R;
 import il.ac.huji.freefood.activities_one_class.FoodDetailsActivity;
 import il.ac.huji.freefood.activities_one_class.NoFoodFoundActivity;
 import il.ac.huji.freefood.data.Food;
 import il.ac.huji.freefood.data.SingletonFoodList;
+import il.ac.huji.freefood.funnyStringsToRefreshButton;
 
 /**
  * Created by Elyasaf on 4/30/2015.
@@ -55,7 +55,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_food);
-        Log.d("no_food", "choose food called");
+//        Log.d("no_food", "choose food called");
         lv_foodList = (ListView) findViewById(R.id.lv_FoodShowList);
         final Context context = this;
 
@@ -100,7 +100,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
             private int pressedTimes = 0;
             @Override
             public void onClick(View view) {
-                String funny = FunnyStringsToRefreshButton.getWord(pressedTimes);
+                String funny = funnyStringsToRefreshButton.getWord(pressedTimes);
                 if (funny != null) { // i.e. not pressed so much times that there are no more funny words
                     Toast.makeText(ChooseFoodActivity.this, funny, Toast.LENGTH_SHORT).show();
                     pressedTimes += 1;
@@ -153,6 +153,8 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
         finish(); // to get it out of the activities stack
     }
 
+
+    @SuppressLint("NewApi")
     protected int getScreenWidth() {
         final int version = android.os.Build.VERSION.SDK_INT;
         final int width;
@@ -169,7 +171,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
     }
 
     protected void deleteFoodListItem(int index) {
-        Log.d("delete", "start");
+//        Log.d("delete", "start");
         SingletonFoodList.getInstance().removeItem(index);
         // update will be via the singleton and the handler
     }
@@ -218,7 +220,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     if (Math.abs(paddingx) + Math.abs(paddingy) < CRITICAL_MOVE_FOR_CLICK && event.getAction() == MotionEvent.ACTION_UP) { // didn't move at all
-                        Log.d("click", "shouldclick summoned");
+//                        Log.d("click", "shouldclick summoned");
                         v.performClick();
                     } else if (Math.abs(paddingx) >= CRITICAL_PADDING) {
                         // create fade-out animation and call delete() at the end

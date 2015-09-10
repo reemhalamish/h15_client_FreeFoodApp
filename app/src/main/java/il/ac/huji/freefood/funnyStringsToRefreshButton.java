@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Re'em on 9/9/2015.
  */
-public class FunnyStringsToRefreshButton {
+public class funnyStringsToRefreshButton {
     private static ArrayList<String> words;
     private static boolean initated = false;
     public static void init() {

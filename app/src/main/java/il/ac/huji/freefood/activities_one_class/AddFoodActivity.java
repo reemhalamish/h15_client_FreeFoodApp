@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -94,7 +93,7 @@ public class AddFoodActivity extends Activity {
             LocationSuperviser.startLocationServiceIfNeeded(this);
             return true;
         } catch (Exception error) {
-            Log.e("location", error.getMessage());
+//            Log.e("location", error.getMessage());
             return false;
         }
     }
@@ -158,7 +157,7 @@ public class AddFoodActivity extends Activity {
         progress.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                Log.d("progress", "dismissed");
+//                Log.d("progress", "dismissed");
             }
         });
         progress.show();
@@ -191,7 +190,7 @@ public class AddFoodActivity extends Activity {
             @Override
             public void run() {
 //                scrollView.scrollTo(pooh_thumbnail.getBottom(), 0); // scrollTo(x, y);
-                Log.d("scroll", "calling");
+//                Log.d("scroll", "calling");
                 scrollView.smoothScrollTo(pooh_thumbnail.getLeft() - 80, 0);
             }
         }, DELAY_FOR_SCROLLING_IN_MS);
@@ -232,7 +231,7 @@ public class AddFoodActivity extends Activity {
                  */
                 currentSelection.setAlpha(ALPHA_FOR_THUMBNAILS);
                 image_id_chosen = (Thumbnail) view.getTag();
-                Log.d("add", "" + image_id_chosen);
+//                Log.d("add", "" + image_id_chosen);
                 currentSelection = (ImageButton) view;
                 currentSelection.setAlpha(1f);
             }
