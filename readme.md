@@ -1,4 +1,4 @@
-FreeFood app sourcecode
+FreeFood app SourceCode
 ==============
 
 basic explaination
@@ -18,4 +18,32 @@ In addition, there are some peculiar stuff:
 - Thumbnail, every thumbnail can be used to store in Food (as integer) and retreive the rellevant drawable to represent it
 All the rest are activities and Application classes
 
-Re'em
+I reccomend viewing the temp branch as well because I used to work on it alot.
+
+History
+--------------
+FreeFood was initated at the huji hackathon at April 30, 2015.
+We went through it all the night, struggling with connection + design + parse + flow...
+It didn't work quite well, but hi! at least we got a nice MainActivity design and some user-recognition module :)
+
+That was that, pretty much, until I continued working on FreeFood by myself in order to submit it to POSTPC course at HUJI - The Hebrew University of Jerusalem Israel.
+
+Right now the app supports:
+- users recognition via parse
+- food auto-locate by the locationCaptureService
+- food upload and download via parse
+- push notifications <-- (HELL YEAH! this one caused a big headache)
+- ErrorActivity class to support on crashes, including guiding the users on how to handle the crisis themselves
+
+
+At start, the design was with pictures of winnie the pooh. It was nice and lovely and cute and... got the app rejected from google play, so there was a lot of work to do and new pictures to find in order to upload FreeFood to google play.
+
+I really appriciate the help of the people listed below, by sitting with me at this not-ending night at the hackathon - 
+Noam Wies
+Elyasaf Cohen
+Orr paradise
+Thanks for contributing, and initating this project!
+May the bugs will run from your programs, like hobbits that just heard about some free food nearby!
+
+
+Re'em Halamish
