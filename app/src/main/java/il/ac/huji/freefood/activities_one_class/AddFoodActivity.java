@@ -42,7 +42,7 @@ public class AddFoodActivity extends Activity {
     protected ImageButton pizza_thumbnail;
     protected ImageButton drinks_thumbnail;
     protected ImageButton beer_thumbnail;
-    protected ImageButton cake_thumbnail;
+    protected ImageButton rice_thumbnail;
     protected ImageButton cookies_thumbnail;
     protected ImageButton fruits_thumbnail;
     protected ImageButton sandwitch_thumbnail;
@@ -101,10 +101,10 @@ public class AddFoodActivity extends Activity {
         coffee_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_coffee);
         drinks_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_drinks);
         beer_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_beer);
-        default_goat_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_pooh);
+        default_goat_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_default);
         pizza_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_pizza);
         sandwitch_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_sandwitch);
-        cake_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_cake);
+        rice_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_rice);
         cookies_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_cookies);
         fruits_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_fruits);
 
@@ -202,12 +202,12 @@ public class AddFoodActivity extends Activity {
         default_goat_thumbnail.setTag(Thumbnail.DEFAULT);
         pizza_thumbnail.setTag(Thumbnail.PIZZA);
         sandwitch_thumbnail.setTag(Thumbnail.SANDVITCH);
+        rice_thumbnail.setTag(Thumbnail.RICE);
         cookies_thumbnail.setTag(Thumbnail.COOKIES);
-        cake_thumbnail.setTag(Thumbnail.CAKE);
         fruits_thumbnail.setTag(Thumbnail.FRUITS);
 
 
-        all_pictures = new ArrayList<>(Arrays.asList(default_goat_thumbnail, coffee_thumbnail, drinks_thumbnail, beer_thumbnail, pizza_thumbnail, sandwitch_thumbnail, cake_thumbnail, cookies_thumbnail, fruits_thumbnail));
+        all_pictures = new ArrayList<>(Arrays.asList(default_goat_thumbnail, coffee_thumbnail, drinks_thumbnail, beer_thumbnail, pizza_thumbnail, sandwitch_thumbnail, rice_thumbnail, cookies_thumbnail, fruits_thumbnail));
         View.OnClickListener choose_listener = createListenerForThumbnails();
         for (ImageButton thumbnail : all_pictures) {
             thumbnail.setOnClickListener(choose_listener);

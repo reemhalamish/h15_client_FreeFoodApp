@@ -69,7 +69,7 @@
                         android:src="@drawable/beer" />
 
                     <ImageButton
-                        android:id="@+id/ib_add_thmb_pooh"
+                        android:id="@+id/ib_add_thmb_default"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/content_des_pooh"
@@ -92,13 +92,14 @@
                         android:contentDescription="sandwitch"
                         android:src="@drawable/sandwich" />
                     <ImageButton
-                        android:id="@+id/ib_add_thmb_cake"
+                        android:id="@+id/ib_add_thmb_rice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:alpha=".15"
-                        android:contentDescription="cake"
-                        android:src="@drawable/cake" />
+                        android:contentDescription="rice"
+                        android:src="@drawable/rice" />
+
                     <ImageButton
                         android:id="@+id/ib_add_thmb_cookies"
                         android:layout_width="wrap_content"

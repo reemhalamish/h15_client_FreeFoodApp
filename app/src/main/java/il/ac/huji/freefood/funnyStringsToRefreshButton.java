@@ -26,13 +26,14 @@ public class funnyStringsToRefreshButton {
         words.add("I don't hear anything, tra-la-la");
         words.add("seriousely, I'm refreshing.");
         words.add("Check your internet connection or something!");
-        words.add("Or maybe, just maybe, THERE IS NO BLOODY FOOD IN HERE!");
+        words.add("Or maybe, just maybe -");
+        words.add("THERE IS NO BLOODY FOOD IN HERE!");
         words.add("try moving to different zone");
         words.add("maybe Jerusalem or something");
         words.add("some place nice");
         words.add("But nooooooo.... you just keep pressing me...");
         words.add("You know what?");
-        words.add("I have work to do");
+        words.add("I have ACTUAL WORK to do");
         words.add("from now on I'm ignoring you. That's it");
     }
     public static String getWord(int timesPressed) {

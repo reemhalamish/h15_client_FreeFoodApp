@@ -130,8 +130,11 @@ public class LocationCaptureService extends Service
             buildGoogleApiClient();
 
         } else {
-            ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
+            if (!FoodBuilder.getInstance().dontNeedLocationAnymore()) { // service was called to update some food
+
+                ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
 //            startParseLocation();
+            }
         }
     }
 
@@ -185,8 +188,11 @@ public class LocationCaptureService extends Service
 //                        "Google PlayServices is out of date. Please upgrade it.\nFood won't be shared",
 //                        Toast.LENGTH_LONG)
 //                        .show();
-                ErrorDialog.callErrorDialog(this, "Google PlayServices is out of date", "So you can't share any food until you will update it. meanwhile you can browse the food that other people shared!");
+                if (! FoodBuilder.getInstance().dontNeedLocationAnymore()) { // service was called to update some food
+
+                    ErrorDialog.callErrorDialog(this, "Google PlayServices is out of date", "So you can't share any food until you will update it. meanwhile you can browse the food that other people shared!");
 //                startParseLocation();
+                }
 //
 //  ONE_DAY add this piece of code to resolve the user's problem by downloading the relevant PlayServices
 // GooglePlayServicesUtil.getErrorDialog(resultCode, getRunningActivitySomehow(),
@@ -196,7 +202,10 @@ public class LocationCaptureService extends Service
 //                        "This device is not supported.", Toast.LENGTH_LONG)
 //                        .show();
 //                startParseLocation();
-                ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't get your location, meaning you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
+                if (!FoodBuilder.getInstance().dontNeedLocationAnymore()) { // service was called to update some food
+
+                    ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't get your location, meaning you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
+                }
             }
             return false;
         }

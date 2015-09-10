@@ -11,17 +11,17 @@ import il.ac.huji.freefood.R;
  */
 public enum Thumbnail implements Serializable {
     DEFAULT(0),
+
     DRINKS(10),
     COFFEE(11),
     BEER(12),
 
     PIZZA(20),
     SANDVITCH(21),
+    RICE(22),
 
     COOKIES(30),
-    CAKE(31),
-    RUGELACH(32),
-    FRUITS(33);
+    FRUITS(31);
 
     private static final Map<Integer, Thumbnail> intToTypeMap = new HashMap<>();
 
@@ -66,12 +66,10 @@ public enum Thumbnail implements Serializable {
                 return R.drawable.pizza;
             case SANDVITCH:
                 return R.drawable.sandwich;
+            case RICE:
+                return R.drawable.rice;
             case COOKIES:
                 return R.drawable.cookies;
-            case CAKE:
-                return R.drawable.cake;
-            case RUGELACH:
-                return R.drawable.rugelach;
             case FRUITS:
                 return R.drawable.fruits;
             default:

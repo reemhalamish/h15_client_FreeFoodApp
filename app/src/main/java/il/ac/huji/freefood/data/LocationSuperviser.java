@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
@@ -30,11 +29,11 @@ public class LocationSuperviser { // ONE_DAY make it Singleton
 
     public static synchronized void updateLocation(Location location) {
         if (location == null) { return; }
-        Log.d("location", "new location to superviser! " + location);
-        Log.d("location", "superviser was " + lastKnownLocation);
+        // Log.d("location", "new location to superviser! " + location);
+        // Log.d("location", "superviser was " + lastKnownLocation);
         if (lastKnownLocation == null || location.getAccuracy() < lastKnownLocation.getAccuracy() * FACTOR_TO_ACCEPT_BAD_ACCURACY)
             lastKnownLocation = location;
-        Log.d("location", "superviser now " + lastKnownLocation);
+        // Log.d("location", "superviser now " + lastKnownLocation);
     }
 
 

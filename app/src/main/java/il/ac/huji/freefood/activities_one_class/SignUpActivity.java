@@ -35,7 +35,7 @@ public class SignUpActivity extends Activity {
             public void onClick(View v) {
                 final String name = userInput.getText().toString();
                 if (name == null || name.length() == 0) {
-                    userInput.setHint("any nickname you want");
+                    userInput.setHint("any nickname you want!");
                     return;
                 }
                 String uniqueID = Settings.Secure.getString(
