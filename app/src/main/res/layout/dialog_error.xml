@@ -31,7 +31,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerInside"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/piglet_sad"
+        android:src="@drawable/turtle_sad"
         />
 </RelativeLayout>
     <RelativeLayout
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Something went wrong!"
+            android:text="title of what went wrong"
 
             android:id="@+id/tv_error_title"
             android:layout_alignParentTop="true"
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Something went wrong!"
+            android:text="explanation about all the things that could have happen because something just didn't go quite as well as expected.     :\"
             android:lines="4"
             android:maxLines="4"
             android:id="@+id/tv_error_msg"

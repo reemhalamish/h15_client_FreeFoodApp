@@ -108,7 +108,7 @@ public class ChooseFoodActivity extends Activity// implements LoaderManager.Load
                 SingletonFoodList.getInstance().getOnlyNewElementsFromParse();
                 // it will automatically get inside this list via the handler
 
-                // TODO add some graphic of work?
+                // ONE_DAY add some graphic of work?
                 // i can add them at the layer of the button. radio-waves-inside-out style :)
             }
         });

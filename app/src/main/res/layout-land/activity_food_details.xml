@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/iv_details_thumbnail"
             android:alpha="0.3"
-            android:src="@drawable/pooh_icon"
+            android:src="@drawable/default_thumbnail"
             android:contentDescription="background image"
             android:layout_above="@+id/tv_details_timestamp"
             android:layout_alignParentRight="true"

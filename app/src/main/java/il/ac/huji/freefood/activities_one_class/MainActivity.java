@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 
     protected void callActivityAdd() {
         Intent addItemIntent = new Intent(this, AddFoodActivity.class);
-        startActivity(addItemIntent); // TODO for result
+        startActivity(addItemIntent); // ONE_DAY for result
     }
     protected void callActivityHungry() {
         Intent addItemIntent = new Intent(this, ChooseFoodActivity.class);
@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
-//            // TODO make the MainActivity extend ActionBarActivity instead
+//            // ONE_DAY make the MainActivity extend ActionBarActivity instead
 //            // and here startActivityForResult(settingsActivity)
 //            return true;
 //        }

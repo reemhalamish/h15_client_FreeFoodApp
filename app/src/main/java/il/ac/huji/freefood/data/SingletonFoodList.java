@@ -282,7 +282,7 @@ public class SingletonFoodList {
                 as one of the results.
 
                 Solution: remove it from the list now,
-                TODO jump a little window that "food is shared!"
+                ONE_DAY jump a little window that "food is shared!"
                 then re-query parse
              */
             @Override

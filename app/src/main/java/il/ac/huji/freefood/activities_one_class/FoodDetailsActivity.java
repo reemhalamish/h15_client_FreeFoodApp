@@ -179,7 +179,7 @@ public class FoodDetailsActivity extends FragmentActivity implements
 
         if (mapIsReady()) {
             // update the current position
-            // TODO one day, i can register some handlers to the LocationSuperviser the same as with the Singleton so I can update it regullarly
+            // ONE_DAY i can register some handlers to the LocationSuperviser the same as with the Singleton so I can update it regullarly
             map.clear();
             addMarkersToMap();
         }

@@ -108,8 +108,8 @@ public class FreeFoodApplication extends android.app.Application {
     }
 
     public void setLastUpdated(Date lastUpdated) {
-        // TODO maybe use the ParseUser object (just add some date other there.
-        // TODO maybe even save the user locally! and then create local use to this app!
+        // ONE_DAY maybe use the ParseUser object (just add some date other there.
+        // ONE_DAY maybe even save the user locally! and then create local use to this app!
         editor = prefs.edit();
         editor.putLong("freefood.lastUpdated", lastUpdated.getTime());
         editor.apply();

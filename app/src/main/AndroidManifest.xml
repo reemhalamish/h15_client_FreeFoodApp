@@ -73,15 +73,13 @@
             android:value="AIzaSyAAMldpW6j6wFRd07Li1lX0tVgtNeFGc_g" />
         <meta-data
             android:name="com.parse.push.notification_icon"
-            android:resource="@drawable/pooh_icon" />
+            android:resource="@drawable/ic_launcher" />
 
-        <!-- TODO once it was android:resource="@drawable/ic_launcher" /> -->
-
-        <service
-            android:name=".LocationServiceOldWay"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
+        <!--<service-->
+            <!--android:name=".LocationServiceOldWay"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true" >-->
+        <!--</service>-->
 
 
 

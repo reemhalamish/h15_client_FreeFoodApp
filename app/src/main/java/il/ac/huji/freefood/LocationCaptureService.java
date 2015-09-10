@@ -3,12 +3,10 @@ package il.ac.huji.freefood;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -16,8 +14,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.parse.LocationCallback;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
@@ -114,7 +110,12 @@ public class LocationCaptureService extends Service
     }
 
     public void onTooLongLocationNotFound() {
-        Toast.makeText(this, "couldn't find sufficient location. Try connecting to a wifi or get out to the open air :)", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "couldn't find sufficient location. Try connecting to a wifi or get out to the open air :)", Toast.LENGTH_LONG).show();
+        if (! FoodBuilder.getInstance().dontNeedLocationAnymore()) { // service was called to update some food
+            ErrorDialog.callErrorDialog(this,
+                    "couldn't find sufficient location",
+                    "Try connecting to a wifi or get out to the open air, and then share your food again!");
+        }
         quitImmediately();
     }
 
@@ -134,43 +135,43 @@ public class LocationCaptureService extends Service
         }
     }
 
-    private void startItOldWay() {
-        startService(new Intent(this, LocationServiceOldWay.class));
-    }
+//    private void startItOldWay() {
+//        startService(new Intent(this, LocationServiceOldWay.class));
+//    }
 
-    private void startParseLocation() {
-        if (true) {
-            LocationSuperviser.updateServiceState(false);
-            startItOldWay();
-            stopSelf();
-            return;
-        }
-//        Log.d(LOG_TAG, "google play won't work. Using parse");
-        Toast.makeText(context, "location capturing will take a while...", Toast.LENGTH_LONG).show(); //TODO something better!
-        ParseGeoPoint.getCurrentLocationInBackground(TIME_UNTIL_PARSE_RETREAT_MILISECONDS, new LocationCallback() {
-            @Override
-            public void done(ParseGeoPoint location, ParseException e) {
-                if (e != null) {
-//                    Log.e(LOG_TAG, "using parse to find the location failed: " + e.getMessage());
-                    stopSelf();
-                    return;
-                }
-//                Log.d(LOG_TAG, "using parse to find the location SUCCEEDED! " + location);
-
-                // a slightly changed version of onFindingLocation();
-                ParseUser user = ParseUser.getCurrentUser();
-                user.put(USER_LOCATION_TAG, location); // for other uses
-                user.saveEventually();
-                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                installation.put(USER_LOCATION_TAG, location);
-                installation.saveEventually();
-
-//                Log.d(LOG_TAG, "found sufficient location. stopping...");
-                FoodBuilder.getInstance().serviceFoundLocation(location, 100);
-                stopSelf();
-            }
-        });
-    }
+//    private void startParseLocation() {
+//        if (true) {
+//            LocationSuperviser.updateServiceState(false);
+////            startItOldWay();
+////            stopSelf();
+//            return;
+//        }
+////        Log.d(LOG_TAG, "google play won't work. Using parse");
+//        Toast.makeText(context, "location capturing will take a while...", Toast.LENGTH_LONG).show();
+//        ParseGeoPoint.getCurrentLocationInBackground(TIME_UNTIL_PARSE_RETREAT_MILISECONDS, new LocationCallback() {
+//            @Override
+//            public void done(ParseGeoPoint location, ParseException e) {
+//                if (e != null) {
+////                    Log.e(LOG_TAG, "using parse to find the location failed: " + e.getMessage());
+//                    stopSelf();
+//                    return;
+//                }
+////                Log.d(LOG_TAG, "using parse to find the location SUCCEEDED! " + location);
+//
+//                // a slightly changed version of onFindingLocation();
+//                ParseUser user = ParseUser.getCurrentUser();
+//                user.put(USER_LOCATION_TAG, location); // for other uses
+//                user.saveEventually();
+//                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+//                installation.put(USER_LOCATION_TAG, location);
+//                installation.saveEventually();
+//
+////                Log.d(LOG_TAG, "found sufficient location. stopping...");
+//                FoodBuilder.getInstance().serviceFoundLocation(location, 100);
+//                stopSelf();
+//            }
+//        });
+//    }
 
     /**
      * Method to verify google play services on the device
@@ -180,23 +181,22 @@ public class LocationCaptureService extends Service
                 .isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                Toast.makeText(context,
-                        "Google PlayServices is out of date. Please upgrade it.\nFood won't be shared",
-                        Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(context,
+//                        "Google PlayServices is out of date. Please upgrade it.\nFood won't be shared",
+//                        Toast.LENGTH_LONG)
+//                        .show();
                 ErrorDialog.callErrorDialog(this, "Google PlayServices is out of date", "So you can't share any food until you will update it. meanwhile you can browse the food that other people shared!");
 //                startParseLocation();
 //
-//  TODO add this piece of code to resolve the user's problem by downloading the relevant PlayServices
+//  ONE_DAY add this piece of code to resolve the user's problem by downloading the relevant PlayServices
 // GooglePlayServicesUtil.getErrorDialog(resultCode, getRunningActivitySomehow(),
 //                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Toast.makeText(context,
-                        "This device is not supported.", Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(context,
+//                        "This device is not supported.", Toast.LENGTH_LONG)
+//                        .show();
 //                startParseLocation();
-                ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
-
+                ErrorDialog.callErrorDialog(this, "We couldn't reach GoogleServices", "So you can't get your location, meaning you can't share any food until you will install it. meanwhile you can browse the food that other people shared!");
             }
             return false;
         }
@@ -278,7 +278,7 @@ public class LocationCaptureService extends Service
 //        Log.e("gps", "connection to google api failed!");
         return;
 
-//        // TODO one day, add this (this is a resolving error code)
+//        // ONE_DAY, add this (this is a resolving error code)
 //        if (mResolvingError) {
 //            // Already attempting to resolve an error.
 //            // then do nothing

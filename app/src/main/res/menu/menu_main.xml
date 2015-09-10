@@ -7,5 +7,5 @@
         <!--android:orderInCategory="100"-->
         <!--android:title="@string/action_settings"-->
         <!--app:showAsAction="never" />-->
-    <!--TODO add this item when there is an optionsActivity-->
+    <!--ONE_DAY add this item when there is an optionsActivity-->
 </menu>

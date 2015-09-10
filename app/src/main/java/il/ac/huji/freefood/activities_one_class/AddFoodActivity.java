@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,7 +37,7 @@ public class AddFoodActivity extends Activity {
     private static final float ALPHA_FOR_THUMBNAILS = 0.5f;
     protected HorizontalScrollView scrollView;
 
-    protected ImageButton pooh_thumbnail;
+    protected ImageButton default_goat_thumbnail;
     protected ImageButton coffee_thumbnail;
     protected ImageButton pizza_thumbnail;
     protected ImageButton drinks_thumbnail;
@@ -73,13 +72,13 @@ public class AddFoodActivity extends Activity {
         findLocation();
         findViews();
         initThumbnails();
-        setFocusOnPooh();
+        setFocusOnDefaultThumbnail();
         createClickListenersForPublishAndBack();
 
     }
 
     private boolean findLocation() {
-//        TODO:
+//        ONE_DAY:
 //              int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 //              if (ConnectionResult.SUCCESS == resultCode) {
 //        then call some other service to catch the location
@@ -102,7 +101,7 @@ public class AddFoodActivity extends Activity {
         coffee_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_coffee);
         drinks_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_drinks);
         beer_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_beer);
-        pooh_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_pooh);
+        default_goat_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_pooh);
         pizza_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_pizza);
         sandwitch_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_sandwitch);
         cake_thumbnail = (ImageButton) findViewById(R.id.ib_add_thmb_cake);
@@ -127,7 +126,7 @@ public class AddFoodActivity extends Activity {
             }
         });
 
-        // TODO add some visuality?
+        // ONE_DAY add some visuality?
         btn_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,52 +145,52 @@ public class AddFoodActivity extends Activity {
         });
 
     }
+//
+//    private void displayProgressDialogToCatchLocation() {
+//        progress = new ProgressDialog(this);
+//        progress.setMax(100);
+//        progress.setTitle("title");
+//        progress.setMessage("please wait...");
+//        progress.setCancelable(false);
+//        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progress.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialogInterface) {
+////                Log.d("progress", "dismissed");
+//            }
+//        });
+//        progress.show();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                // manipulation stuf.. computation...
+//                for (int i = 0; i < 100; i++) {
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            progress.incrementProgressBy(1);
+//                        }
+//                    });
+//
+//                    try {
+//                        Thread.sleep(1000);                 //1000 milliseconds is one second.
+//                    } catch (InterruptedException ex) {
+//                        Thread.currentThread().interrupt();
+//                    }
+//                }
+//            }
+//        }).start();
+//    }
 
-    private void displayProgressDialogToCatchLocation() {
-        progress = new ProgressDialog(this);
-        progress.setMax(100);
-        progress.setTitle("title");
-        progress.setMessage("please wait...");
-        progress.setCancelable(false);
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-//                Log.d("progress", "dismissed");
-            }
-        });
-        progress.show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO manipulation stuf.. computation...
-                for (int i = 0; i < 100; i++) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progress.incrementProgressBy(1);
-                        }
-                    });
 
-                    try {
-                        Thread.sleep(1000);                 //1000 milliseconds is one second.
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
-                }
-            }
-        }).start();
-    }
-
-
-    private void setFocusOnPooh() {
+    private void setFocusOnDefaultThumbnail() {
         scrollView = (HorizontalScrollView) findViewById(R.id.hsv_add_thumbnails);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                scrollView.scrollTo(pooh_thumbnail.getBottom(), 0); // scrollTo(x, y);
+//                scrollView.scrollTo(default_goat_thumbnail.getBottom(), 0); // scrollTo(x, y);
 //                Log.d("scroll", "calling");
-                scrollView.smoothScrollTo(pooh_thumbnail.getLeft() - 80, 0);
+                scrollView.smoothScrollTo(default_goat_thumbnail.getLeft() - 80, 0);
             }
         }, DELAY_FOR_SCROLLING_IN_MS);
     }
@@ -200,7 +199,7 @@ public class AddFoodActivity extends Activity {
         coffee_thumbnail.setTag(Thumbnail.COFFEE);
         drinks_thumbnail.setTag(Thumbnail.DRINKS);
         beer_thumbnail.setTag(Thumbnail.BEER);
-        pooh_thumbnail.setTag(Thumbnail.POOH);
+        default_goat_thumbnail.setTag(Thumbnail.DEFAULT);
         pizza_thumbnail.setTag(Thumbnail.PIZZA);
         sandwitch_thumbnail.setTag(Thumbnail.SANDVITCH);
         cookies_thumbnail.setTag(Thumbnail.COOKIES);
@@ -208,15 +207,15 @@ public class AddFoodActivity extends Activity {
         fruits_thumbnail.setTag(Thumbnail.FRUITS);
 
 
-        all_pictures = new ArrayList<>(Arrays.asList(pooh_thumbnail, coffee_thumbnail, drinks_thumbnail, beer_thumbnail, pizza_thumbnail, sandwitch_thumbnail, cake_thumbnail, cookies_thumbnail, fruits_thumbnail));
+        all_pictures = new ArrayList<>(Arrays.asList(default_goat_thumbnail, coffee_thumbnail, drinks_thumbnail, beer_thumbnail, pizza_thumbnail, sandwitch_thumbnail, cake_thumbnail, cookies_thumbnail, fruits_thumbnail));
         View.OnClickListener choose_listener = createListenerForThumbnails();
         for (ImageButton thumbnail : all_pictures) {
             thumbnail.setOnClickListener(choose_listener);
             thumbnail.setAlpha(ALPHA_FOR_THUMBNAILS);
         }
-        currentSelection = pooh_thumbnail;
-        image_id_chosen = Thumbnail.POOH;
-        pooh_thumbnail.setAlpha(1f);
+        currentSelection = default_goat_thumbnail;
+        image_id_chosen = Thumbnail.DEFAULT;
+        default_goat_thumbnail.setAlpha(1f);
     }
 
     View.OnClickListener createListenerForThumbnails() {
@@ -281,14 +280,14 @@ public class AddFoodActivity extends Activity {
 
 
 /*
-TODO
-maybe a whole different look:
+ONE_DAY
 publish only with one button
 then pop-up appears to ask you if you want to:
  [button] publish to the world(default, <countdown>)
  [button] publish only to facebook friends
  [button] publish to the world with notifications for facebook friends
+ [button] publish only to app-followers <--- and add the ability to follow other people with their consent ("reem wants to follow you! do you agree?")
 
 
- with the last two will open a facebook confirmation activityForResult() if not in facebook already
+ with 2sc and 3rd options will open a facebook confirmation activityForResult() if not in facebook already
  */

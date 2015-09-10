@@ -15,7 +15,7 @@ import il.ac.huji.freefood.LocationCaptureService;
 /**
  * Created by Re'em on 9/7/2015.
  */
-public class LocationSuperviser { // TODO make it Singleton
+public class LocationSuperviser { // ONE_DAY make it Singleton
     private static final float FACTOR_TO_ACCEPT_BAD_ACCURACY = 10f;
     public static final int MIN_PRECISE_TO_PUBLISH = 50;
     private static final double FOOD_CLOSE_CRITERIA_IN_METERS = 10;

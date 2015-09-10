@@ -10,7 +10,7 @@ import il.ac.huji.freefood.R;
  * Created by reem on 8/8/15.
  */
 public enum Thumbnail implements Serializable {
-    POOH(0),
+    DEFAULT(0),
     DRINKS(10),
     COFFEE(11),
     BEER(12),
@@ -40,7 +40,7 @@ public enum Thumbnail implements Serializable {
     public static Thumbnail fromInt(int i) {
         Thumbnail type = intToTypeMap.get(i);
         if (type == null)
-            return Thumbnail.POOH;
+            return Thumbnail.DEFAULT;
         return type;
     }
 
@@ -54,8 +54,8 @@ public enum Thumbnail implements Serializable {
 
     public int toDrawableID() {
         switch (this) {
-            case POOH:
-                return R.drawable.pooh_icon;
+            case DEFAULT:
+                return R.drawable.default_thumbnail;
             case DRINKS:
                 return R.drawable.drinks;
             case COFFEE:
@@ -75,7 +75,7 @@ public enum Thumbnail implements Serializable {
             case FRUITS:
                 return R.drawable.fruits;
             default:
-                return R.drawable.pooh_icon;
+                return R.drawable.default_thumbnail;
         }
     }
 }

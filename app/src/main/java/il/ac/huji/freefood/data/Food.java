@@ -1,7 +1,5 @@
 package il.ac.huji.freefood.data;
 
-import android.util.Log;
-
 import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -55,7 +53,7 @@ public class Food extends ParseObject implements Serializable {
     }
 
     public void setThumbnail(Thumbnail thumbnail) {
-        Log.d("thumbnail", thumbnail.toString());
+//        Log.d("thumbnail", thumbnail.toString());
         put("thumbnail", thumbnail.toInt());
     }
 

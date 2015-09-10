@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.20">
+        android:layout_weight="0.15">
         <TextView
             android:id="@+id/login2_textView"
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:background="#ff282828"
-                android:src="@drawable/pooh_in_snow_new" />
+                android:src="@drawable/baby" />
     </RelativeLayout>
 
 
@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="please wait while loading your profile..."
+        android:paddingTop="15dp"
         android:layout_weight="0.05"/>
     <!--android:layout_below="@+id/login2_imageView"-->
 </LinearLayout>

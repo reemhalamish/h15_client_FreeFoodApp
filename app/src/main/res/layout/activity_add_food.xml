@@ -73,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/content_des_pooh"
-                        android:src="@drawable/pooh_icon" />
+                        android:src="@drawable/default_thumbnail" />
 
                     <ImageButton
                         android:id="@+id/ib_add_thmb_pizza"

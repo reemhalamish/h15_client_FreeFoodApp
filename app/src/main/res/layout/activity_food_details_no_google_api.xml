@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/iv_details_thumbnail"
             android:alpha="0.3"
-            android:src="@drawable/pooh_icon"
+            android:src="@drawable/default_thumbnail"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
